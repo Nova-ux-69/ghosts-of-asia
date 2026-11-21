@@ -1,0 +1,7 @@
+__pycache__/
+*.tmp.mp4
+episodes/*/p1/
+episodes/*/p2/
+episodes/*/stills/
+episodes/*/log_*.txt
+toolkit/models/
