@@ -193,7 +193,7 @@ def make_night(D, caps):
 def make_cliff(D, caps):
     y = Yard((2, 4, 14), (22, 30, 56), moon=(820, 420), moon_r=80, tree_x=600, tree_s=1.9, house_x=-600, light=0.7)
     t2 = caps[2][1]
-    big_t = text_img("PART 2 TOMORROW", font(LORA, 92, "Bold"), fill=CREAM, glow=(20, 140, 80, 255), pad=24)
+    big_t = text_img("PART 2 TONIGHT", font(LORA, 92, "Bold"), fill=CREAM, glow=(20, 140, 80, 255), pad=24)
     sub_t = text_img("Follow so you don't miss it", font(INTER_M, 42), fill=(220, 236, 228, 255), pad=12)
     frame = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(frame)

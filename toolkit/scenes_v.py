@@ -322,7 +322,7 @@ def make_cliff(D, caps):
     warm_big = glow_sprite(420, (255, 160, 70), 1.6)
     warm_small = glow_sprite(64, (255, 220, 150), 1.5)
     t2 = caps[2][1]
-    big_t = text_img("PART 2 TOMORROW", font(LORA, 92, "Bold"), fill=CREAM, glow=(170, 20, 35, 255), pad=24)
+    big_t = text_img("PART 2 TONIGHT", font(LORA, 92, "Bold"), fill=CREAM, glow=(170, 20, 35, 255), pad=24)
     sub_t = text_img("Follow so you don't miss it", font(INTER_M, 42), fill=(220, 214, 236, 255), pad=12)
     AX, AY = 700, GY + 22
 

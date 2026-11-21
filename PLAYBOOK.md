@@ -2,8 +2,8 @@
 
 This repo is the production kit for Nova's YouTube channel. Every day, one new **episode** is made as **two vertical Shorts**:
 
-- **Part 1** goes public at **7:00 PM Singapore time** (Asia/Singapore). It has a hook and ends on a cliffhanger.
-- **Part 2** goes public at **7:00 AM the next morning**. It has a recap, the payoff, the legend explained, and a question for the comments.
+- **Part 1** goes public at **7:00 AM Singapore time** (Asia/Singapore). It has a hook and ends on a cliffhanger.
+- **Part 2** goes public at **7:00 PM the same day**. It has a recap, the payoff, the legend explained, and a question for the comments.
 
 Nova's goal is to grow the channel and succeed on YouTube. Ghost stories from Asia come first, and other topics may come later. Every episode should be made the way a top Shorts creator would make it.
 
@@ -33,7 +33,7 @@ Nova's goal is to grow the channel and succeed on YouTube. Ghost stories from As
     - Set `providers=[{"network":"youtube"}]`.
     - Set `youtubeData`: `{"title": ..., "type": "short", "privacy": "public", "madeForKids": false, "isAiGeneratedContent": false, "category": "FILM_ANIMATION", "tags": [...]}`. `isAiGeneratedContent` is for realistic synthetic footage, and these are clearly animated cartoons.
     - Put the description in `text`. Put the video URL in `media`.
-    - Part 1 goes at 19:00 today. Part 2 goes at 07:00 tomorrow.
+    - Part 1 goes at 07:00 and Part 2 at 19:00 on the same day: the first day in LOG.md that has no episode yet (normally tomorrow).
 13. **Update `episodes/LOG.md`.** Add the date, episode, titles, Metricool planner URLs and any problems. Commit and push.
 14. **Report to Nova** in 3–5 lines: what was made, when each part posts, and one growth tip from the data, if there is any.
 
@@ -42,7 +42,7 @@ If any step fails and can't be fixed, **don't post a broken video**. Write the p
 ## 2. Story and retention rules (influencer playbook)
 
 - **Hook in the first 2 seconds.** Open with a rule, a warning or a question, never with "Hello". Examples: "If you hear…, pray that…" or "In Japan, never answer this question…". Put the country name on screen immediately.
-- **Open loops.** Part 1 must end on an unanswered question, with "PART 2 TOMORROW" on screen. Part 2 starts with a 5-second recap, so new viewers aren't lost.
+- **Open loops.** Part 1 must end on an unanswered question, with "PART 2 TONIGHT" on screen. Part 2 starts with a 5-second recap, so new viewers aren't lost.
 - **Give the audience more information than the hero has.** Let viewers see the ghost before the character does. This builds tension and replays.
 - **Use the rule-breaking structure.** Show a warning, show someone breaking it, then show the consequence. This is the most shareable shape for folklore.
 - **Teach something true.** Part 2 explains the real legend in simple words, with 2–3 facts. This makes the videos "authentic, original value", which protects monetization under YouTube's inauthentic-content policy.
@@ -73,7 +73,7 @@ If any step fails and can't be fixed, **don't post a broken video**. Write the p
 - **Title (max ~70 characters).** Combine curiosity with the series name, for example `Never answer if she asks this 😶 | Ghosts of Asia: Japan (Part 1)`. Vary the formula: warning / "why you should never…" / "the ghost that…" / a question.
 - **Description.**
   - Lines 1–2 are a mini-hook in story voice.
-  - Then one teaser line ("Part 2 drops tomorrow at 7am"), plus one true fact about the legend.
+  - Then one teaser line ("Part 2 drops tonight at 7pm"), plus one true fact about the legend.
   - Then the series line, then 6–9 hashtags: `#shorts` + `#horrorstories` + the ghost name + the country + `#asianfolklore` + `#ghoststory` + 1–3 trending or relevant ones.
 - **Part 2's description links to Part 1** using the URL from LOG.md.
 - **Pinned comment idea** (save it in LOG.md for Nova): a poll-style question for the audience.
