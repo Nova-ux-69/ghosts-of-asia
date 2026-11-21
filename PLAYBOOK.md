@@ -27,15 +27,25 @@ Nova's goal is to grow the channel and succeed on YouTube. Ghost stories from As
    - Concatenate with the ffmpeg concat demuxer.
    - Mux `pN/mix.wav` using `-af loudnorm=I=-14:TP=-1.5:LRA=11 -c:a aac -b:a 192k`.
    - Re-encode the final file with `-crf 25 -preset veryfast -movflags +faststart` so each part is **under 45 MB**.
-10. **Check the final files.** Each part must be 1080×1920 and 40–75 seconds long. Look at 3 frames from each final MP4.
-11. **Host the videos.** Copy the MP4s to `videos/epNN_partN.mp4`, then commit and push to `main`. The public URL is `https://raw.githubusercontent.com/Nova-ux-69/ghosts-of-asia/main/videos/<file>`. Confirm it loads with `curl -sI`.
-12. **Schedule both parts in Metricool.** Use blogId `8271706` and timezone `Asia/Singapore`.
+10. **Make a cover image (thumbnail) for each part.** Viewers should see the country and part number at a glance. From the episode folder, run:
+
+    `python3 ../../toolkit/thumbnail.py scenes_epNN p1 <scene> <t> "<COUNTRY>" "PART 1" "<3–6 word hook, *one word* in yellow>" epNN_part1_thumb.jpg [shift_px]`
+
+    Do the same for p2 with "PART 2".
+    - Pick the most intriguing frame: the mystery for Part 1, the ghost for Part 2.
+    - Use `shift_px` (for example 420) so the ghost's face sits between the PART badge and the hook text, and isn't hidden.
+    - Look at both covers before using them.
+    - The series header (GHOSTS OF ASIA / COUNTRY / PART N) is also visible from frame 0 of the hook and recap scenes. Keep it that way, so the auto-picked cover works too.
+11. **Check the final files.** Each part must be 1080×1920 and 40–75 seconds long. Look at 3 frames from each final MP4.
+12. **Host the videos.** Copy the MP4s and the cover JPGs to `videos/` (`epNN_partN.mp4`, `epNN_partN_thumb.jpg`), then commit and push to `main`. The public URL is `https://raw.githubusercontent.com/Nova-ux-69/ghosts-of-asia/main/videos/<file>`. Confirm it loads with `curl -sI`.
+13. **Schedule both parts in Metricool.** Use blogId `8271706` and timezone `Asia/Singapore`.
     - Set `providers=[{"network":"youtube"}]`.
     - Set `youtubeData`: `{"title": ..., "type": "short", "privacy": "public", "madeForKids": false, "isAiGeneratedContent": false, "category": "FILM_ANIMATION", "tags": [...]}`. `isAiGeneratedContent` is for realistic synthetic footage, and these are clearly animated cartoons.
     - Put the description in `text`. Put the video URL in `media`.
+    - Set `videoThumbnailUrl` to the cover's raw GitHub URL. If Metricool rejects the post with `VIDEO_THUMBNAIL_NOT_APPLICABLE` (the channel isn't verified for custom Shorts thumbnails yet), schedule it again without `videoThumbnailUrl` and note it in LOG.md. The first frame still shows the country and part.
     - Part 1 goes at 07:00 and Part 2 at 19:00 on the same day: the first day in LOG.md that has no episode yet (normally tomorrow).
-13. **Update `episodes/LOG.md`.** Add the date, episode, titles, Metricool planner URLs and any problems. Commit and push.
-14. **Report to Nova** in 3–5 lines: what was made, when each part posts, and one growth tip from the data, if there is any.
+14. **Update `episodes/LOG.md`.** Add the date, episode, titles, Metricool planner URLs and any problems. Commit and push.
+15. **Report to Nova** in 3–5 lines: what was made, when each part posts, and one growth tip from the data, if there is any.
 
 If any step fails and can't be fixed, **don't post a broken video**. Write the problem in LOG.md and report it.
 

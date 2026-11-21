@@ -67,11 +67,12 @@ def pill(text, f, outline=GOLD, fill=(30, 24, 50, 225), color=CREAM, h=70):
 def series_header(country, part=None):
     lbl = text_img("GHOSTS  OF  ASIA", font(INTER_M, 34), fill=GOLD, pad=10)
     big = text_img(country, font(LORA, 124, "Bold"), fill=CREAM, glow=(170, 20, 35, 230), pad=24)
-    p = pill(part, font(INTER_SB, 34), outline=(220, 60, 60, 255), fill=(120, 16, 24, 230)) if part else None
+    p = pill(part, font(INTER_SB, 52), outline=(255, 90, 90, 255), fill=(170, 18, 30, 240), h=96) if part else None
     return lbl, big, p
 
 
-def header_layers(hdr, t, t0=0.2, y=210):
+def header_layers(hdr, t, t0=-1.2, y=210):
+    # t0=-1.2: the series header is fully visible from frame 0, so the first frame works as a cover (country + PART)
     lbl, big, p = hdr
     out = [centered(lbl, y, ease((t - t0) / 0.6)),
            centered(big, y + 40 - 10 * ease((t - t0) / 0.9), ease((t - t0 - 0.2) / 0.8))]
