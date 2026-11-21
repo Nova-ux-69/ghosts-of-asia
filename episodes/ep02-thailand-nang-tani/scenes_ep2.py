@@ -1,8 +1,7 @@
 """Episode 2: Nang Tani (Thailand), vertical scenes."""
-import os, sys, math, random
-_EP = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, _EP)
-sys.path.insert(1, os.path.join(_EP, "..", "..", "toolkit"))
+import sys, math, random
+sys.path.insert(0, "/home/claude/ep2")
+sys.path.insert(1, "/home/claude/shorts")
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from art_v import *
