@@ -14,5 +14,6 @@ Times are Singapore time. Channel: YouTube channel UC18Ih1Y9aLHpD1C8fqWDIwQ. Met
 - Ep02 pinned comment idea: "Would you tie the ribbons back... or cut the tree? 🎀🪓"
 - Hosting check: Metricool accepts raw.githubusercontent.com MP4 links (it copies them to its own storage). Confirmed on ep02.
 - 2026-11-22: Nova changed the schedule. Every day = one episode: Part 1 at 07:00, Part 2 at 19:00 the same day. Ep02 moved to 07:00/19:00 on 2026-11-22. Ep02 Part 1 end card changed from "PART 2 TOMORROW" to "PART 2 TONIGHT" (videos/ep02_part1_v2.mp4) and its description now says "Part 2 drops tonight at 7pm".
+- 2026-11-22 02:47: Ep02 both parts updated in Metricool with cover images (videos/ep02_part1_thumb.jpg, ep02_part2_thumb.jpg) and new videos (ep02_part1_v3.mp4 with the header visible from frame 0 + PART 2 TONIGHT end card; ep02_part2.mp4 with the header from frame 0). Metricool ACCEPTED videoThumbnailUrl for this channel.
 - Next episode to make: ep03 Japan / Kuchisake-onna (Part 1 at 07:00 on 2026-11-23, Part 2 at 19:00 on 2026-11-23).
 - Next in backlog: see PLAYBOOK.md section 6.
