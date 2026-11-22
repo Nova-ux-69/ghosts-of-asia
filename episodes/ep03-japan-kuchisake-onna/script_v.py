@@ -14,7 +14,7 @@ PARTS = {
   ("appear",["Yui laughed it off.", "But under the next streetlight, someone was standing very still.",
              "A tall woman, in a long red coat and a white mask."], 0.5, False),
   ("ask",   ["She stepped closer. Her eyes never blinked.", "And she whispered...", "Am I pretty?"], 0.9, True),
-  ("cliff", ["Yui's heart was pounding.", "What would you say?", "Part two, tonight."], 2.2, True),
+  ("cliff", ["Yui's heart was pounding.", "What would you say?", "Part two is up now."], 2.2, True),
  ],
  "p2": [
   ("recap", ["Last time, a masked woman stopped Yui on an empty street.",

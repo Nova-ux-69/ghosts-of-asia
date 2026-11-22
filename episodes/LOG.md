@@ -23,5 +23,6 @@ Times are Singapore time. Channel: YouTube channel UC18Ih1Y9aLHpD1C8fqWDIwQ. Met
 - Ep03 Part 2 description says Part 1 went up at 7am on the channel (no URL yet). Tomorrow's run (before 19:00) could add the real Part 1 link if updating scheduled posts is allowed.
 - Ep03 production: new world (Japanese night street with block walls, utility poles, vending machines, sodium streetlights, curved traffic mirror; sepia flashback room with shoji; seigaiha explainer). Ghost: long red coat, white surgical mask, hime-cut black hair; mouth never shown (scene cuts to black). P1 55.4 s / 33 MB, P2 64.3 s / 33 MB, both 1080x1920.
 - Weekly analytics (Sun 2026-11-22): Metricool shows ep01 P1/P2 but no views/duration data yet (YouTube stats lag 2–3 days, channel is 1 day old). Nothing to compare yet; check again next Sunday.
-- Next episode to make: ep04 Philippines / Manananggal (Part 1 at 07:00 on 2026-11-24, Part 2 at 19:00 on 2026-11-24).
+- 2026-11-22 21:45: NEW SCHEDULE (Nova). Two slots a day, 07:00 and 19:00. Each slot = one full episode (Part 1 at HH:00, Part 2 at HH:05). Two daily runs each make one episode for the first free slot that is 4+ hours away. Ep03 Japan is being posted NOW (both parts, 2026-11-22 ~22:15), with Part 1's ending changed to "PART 2 IS UP NOW".
+- Next episode to make: ep04 Philippines / Manananggal for 2026-11-23 07:00 (Part 1) + 07:05 (Part 2). Then ep05 Indonesia / Pocong for 2026-11-23 19:00 + 19:05.
 - Next in backlog: see PLAYBOOK.md section 6.

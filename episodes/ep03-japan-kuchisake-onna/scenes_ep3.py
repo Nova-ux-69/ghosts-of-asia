@@ -305,8 +305,8 @@ def make_cliff(D, caps):
     mir, (mcx, mcy), mr = curve_mirror(R / 100 * 1.0)
     t_hand = caps[1][1]
     t3 = caps[2][1]
-    big_t = text_img("PART 2 TONIGHT", font(LORA, 96, "Bold"), fill=CREAM, glow=(190, 20, 30, 255), pad=24)
-    sub_t = text_img("Follow so you don't miss it", font(INTER_M, 42), fill=(232, 226, 230, 255), pad=12)
+    big_t = text_img("PART 2 IS UP NOW", font(LORA, 96, "Bold"), fill=CREAM, glow=(190, 20, 30, 255), pad=24)
+    sub_t = text_img("Watch it next on our channel", font(INTER_M, 42), fill=(232, 226, 230, 255), pad=12)
 
     def f(t):
         reach = ease((t - t_hand) / 2.6) * 0.85
