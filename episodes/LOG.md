@@ -8,8 +8,8 @@ Times are Singapore time. Channel: YouTube channel UC18Ih1Y9aLHpD1C8fqWDIwQ. Met
 | 01 | Malaysia / Pontianak | 2 | Why you should NEVER turn around \| Ghosts of Asia: Malaysia (Part 2) | 2026-11-22 (uploaded by Nova by hand) | https://youtube.com/shorts/vhByeQecesE |
 | 02 | Thailand / Nang Tani | 1 | Never cut down THIS banana tree 🎀👻 \| Ghosts of Asia: Thailand (Part 1) | 2026-11-22 07:00 (Metricool, posted) | https://www.youtube.com/shorts/PeFpDkZes5A |
 | 02 | Thailand / Nang Tani | 2 | She wanted her ribbons back... 😨 \| Ghosts of Asia: Thailand (Part 2) | 2026-11-22 19:00 (Metricool) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=-8411559200260079191 |
-| 03 | Japan / Kuchisake-onna | 1 | She asks just ONE question... 😷 \| Ghosts of Asia: Japan (Part 1) | 2026-11-23 07:00 (Metricool) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=1238129735794180244 |
-| 03 | Japan / Kuchisake-onna | 2 | Then she pulled down her mask... 😱 \| Ghosts of Asia: Japan (Part 2) | 2026-11-23 19:00 (Metricool) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=-1739787922151814777 |
+| 03 | Japan / Kuchisake-onna | 1 | She asks just ONE question... 😷 \| Ghosts of Asia: Japan (Part 1) | 2026-11-22 22:05 (Metricool, moved up by Nova; video ep03_part1_v2.mp4) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=1238129735794180244 |
+| 03 | Japan / Kuchisake-onna | 2 | Then she pulled down her mask... 😱 \| Ghosts of Asia: Japan (Part 2) | 2026-11-22 22:10 (Metricool, moved up by Nova) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=-1739787922151814777 |
 
 ## Notes
 - Ep01 pinned comment idea: "Would YOU have turned around? 👀"
