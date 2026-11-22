@@ -25,4 +25,5 @@ Times are Singapore time. Channel: YouTube channel UC18Ih1Y9aLHpD1C8fqWDIwQ. Met
 - Weekly analytics (Sun 2026-11-22): Metricool shows ep01 P1/P2 but no views/duration data yet (YouTube stats lag 2–3 days, channel is 1 day old). Nothing to compare yet; check again next Sunday.
 - 2026-11-22 21:45: NEW SCHEDULE (Nova). Two slots a day, 07:00 and 19:00. Each slot = one full episode (Part 1 at HH:00, Part 2 at HH:05). Two daily runs each make one episode for the first free slot that is 4+ hours away. Ep03 Japan is being posted NOW (both parts, 2026-11-22 ~22:15), with Part 1's ending changed to "PART 2 IS UP NOW".
 - Next episode to make: ep04 Philippines / Manananggal for 2026-11-23 07:00 (Part 1) + 07:05 (Part 2). Then ep05 Indonesia / Pocong for 2026-11-23 19:00 + 19:05.
+- 2026-11-22 21:50: ep04 Philippines / Manananggal IN PROGRESS for slot 2026-11-23 07:00 (+07:05) (scheduled run). Assumes ep03 moves off 07:00 tonight; if ep03 still holds 07:00 in Metricool at scheduling time, ep04 takes the next free slot instead. Other runs: please take a different slot.
 - Next in backlog: see PLAYBOOK.md section 6.
