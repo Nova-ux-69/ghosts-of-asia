@@ -3,7 +3,7 @@
 This repo is the production kit for Nova's YouTube channel. Every day, one new **episode** is made as **two vertical Shorts**:
 
 - There are **two posting slots every day: 07:00 and 19:00 Singapore time** (Asia/Singapore). Each slot gets **one full episode: Part 1 and Part 2 together**, so viewers never wait (Nova's decision, 2026-11-22).
-- **Part 1** goes public at the slot time (07:00 or 19:00). It has a hook and ends on a cliffhanger, with "PART 2 IS UP NOW" on screen.
+- **Part 1** goes public at the slot time (07:00 or 19:00). It has a hook and ends on a cliffhanger. NO "Part 2 is up now" text or voice anywhere (Nova, 2026-11-24).
 - **Part 2** goes public **5 minutes later** (07:05 or 19:05), so it shows as the newest Short on the channel. It has a quick recap, the payoff, the legend explained, and a question for the comments.
 - So there are **two new countries every day**. Two daily runs each make one episode for the next free slot.
 
@@ -55,7 +55,7 @@ If any step fails and can't be fixed, **don't post a broken video**. Write the p
 ## 2. Story and retention rules (influencer playbook)
 
 - **Hook in the first 2 seconds.** Open with a rule, a warning or a question, never with "Hello". Examples: "If you hear…, pray that…" or "In Japan, never answer this question…". Put the country name on screen immediately.
-- **Open loops.** Part 1 must end on an unanswered question, with "PART 2 IS UP NOW" on screen. The last narration line should say something like "Part two is up now."  Part 2 starts with a 5-second recap, so new viewers aren't lost.
+- **Open loops.** Part 1 must end on an unanswered question. Do NOT put "PART 2 IS UP NOW" on screen and do NOT say it in the narration (Nova removed it, 2026-11-24): end on the cliffhanger itself, then cut to black. Part 2 starts with a 5-second recap, so new viewers aren't lost.
 - **Give the audience more information than the hero has.** Let viewers see the ghost before the character does. This builds tension and replays.
 - **Use the rule-breaking structure** (inside the survival story of 2a). Show a warning, show someone breaking it, then show the consequence. This is the most shareable shape for folklore.
 - **Teach something true.** Part 2 explains the real legend in simple words, with 2–3 facts. This makes the videos "authentic, original value", which protects monetization under YouTube's inauthentic-content policy.
@@ -73,7 +73,7 @@ Every episode is a **survival story**, not a lecture. The viewer should feel "wo
 - **The survival rule from the legend.** Every legend has a rule that saves you (don't answer, hold your breath, don't look back, salt, a bell, sunrise). Show the rule early as a warning, so viewers watch for it.
 - **Escalate in 3 steps.** Something small and wrong → proof it is real and following → trapped with no way out. Every 10–15 seconds the danger gets closer.
 - **A wrong choice and a near miss.** The hero makes one mistake (looks back, answers, drops the charm) and only just escapes. Use a hiding scene: under a bed, in a cupboard, behind a tombstone, holding their breath while the ghost passes inches away.
-- **Part 1 ends at the worst moment**: the hero is trapped and the ghost is right there. Last line: a choice for the viewer ("Run… or hide? Part two is up now.").
+- **Part 1 ends at the worst moment**: the hero is trapped and the ghost is right there. Last line: a choice for the viewer ("Run… or hide?"), then a hard cut to black on a scare hit. No "Part 2" line.
 - **Part 2: the escape.** The hero uses the rule at the last second. Then a twist in the final 5 seconds (the ghost isn't gone, it followed someone else, or it's behind the viewer), THEN the true-legend facts and the comment question ("Would YOU have survived?").
 - Keep it grounded: real places, real local details (food, street names, transport) so it feels like it could happen tonight.
 
@@ -96,6 +96,7 @@ Nova wants every episode scarier, with stronger sound. Push the fear as far as p
 - Every build-up has a beat under it: `pulse_beat()` (drums that speed up) plus `heartbeat_accel()`.
 - Right before the scare: `riser()`, then 0.3–0.5 s of **total silence**. Duck the drone too.
 - On the scare: `braam()` + `sub_drop()` + `glitch()` + `dissonant_strings()`, loud. This is the loudest moment of the video, about 3 dB above the narration.
+- **Dog howling in the background (Nova's request, 2026-11-24):** every part has distant dogs howling, from `dog_howl()` / `dog_pack()` in `toolkit/sfx.py`. Use `dog_pack(distance=0.7)` near the start (the "something is coming" signal), single far howls (`dog_howl(distance=0.6-0.8)`) every 15-20 s under the build-ups, and STOP the dogs suddenly right before a scare (sudden silence = the ghost is close). Keep them under the narration.
 - Use `reverse_whisper()` for creepy moments. Keep a low drone with wind under everything, and nothing completely quiet except the pre-scare silence.
 - The narration stays clear: duck the music under the voice, but not under the scare hits.
 

@@ -100,3 +100,33 @@ def dissonant_strings(dur=5.0, g=1.0):
 
 def silence(dur):
     return np.zeros(int(dur * SR))
+
+
+def dog_howl(dur=4.0, pitch=520, distance=0.6, g=1.0, seed=None):
+    """A lonely dog howling far away: rises in pitch, holds with a wobble, then falls and fades.
+    distance 0 = close, 1 = very far (darker, quieter, more echo). Layer 1-3 howls with different pitch/seed for a pack."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur); u = t / dur
+    contour = pitch * (0.62 + 0.38 * np.minimum(1, u / 0.18) ** 0.6 - 0.22 * np.clip((u - 0.72) / 0.28, 0, 1) ** 1.5)
+    contour *= 1 + 0.018 * np.sin(2 * np.pi * (5.2 + rng.uniform(-0.6, 0.6)) * t) * np.minimum(1, u / 0.3)
+    ph = 2 * np.pi * np.cumsum(contour) / SR
+    s = np.sin(ph) + 0.45 * np.sin(2 * ph + 0.3) + 0.18 * np.sin(3 * ph + 1.1) + 0.06 * np.sin(4 * ph)
+    s += 0.05 * _bp(rng.standard_normal(len(t)), 300, 2500)          # breath
+    s = _bp(s, 250, 3200 - 2000 * distance)
+    env = np.minimum(1, u / 0.12) * np.clip((1 - u) / 0.25, 0, 1) ** 1.3
+    s *= env
+    # echo off buildings / trees: a few decaying delayed copies
+    out = s.copy()
+    for k, (dly, a) in enumerate(((0.19, 0.45), (0.37, 0.3), (0.61, 0.2), (0.9, 0.12))):
+        n = int(dly * SR * (0.6 + distance)); out[n:] += s[:-n] * a * (0.4 + distance)
+    out = out / (np.abs(out).max() + 1e-9)
+    return out * (0.5 - 0.3 * distance) * g
+
+
+def dog_pack(dur=7.0, distance=0.7, g=1.0):
+    """2-3 dogs howling one after another in the distance (classic 'something is coming' sound)."""
+    out = np.zeros(int(dur * SR))
+    for i, (st, p, ln) in enumerate(((0.0, 520, 4.2), (1.3, 610, 3.6), (2.6, 470, 4.0))):
+        h = dog_howl(min(ln, dur - st), p, distance + 0.08 * i, seed=i)
+        a = int(st * SR); out[a:a + len(h)] += h * (1 - 0.2 * i)
+    return out / (np.abs(out).max() + 1e-9) * (0.5 - 0.3 * distance) * g
