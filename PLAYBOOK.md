@@ -98,6 +98,15 @@ Nova wants every episode scarier, with stronger sound. Push the fear as far as p
 - **After muxing each part, ALWAYS run the grade:** `bash ../../toolkit/grade.sh epNN_partN_raw.mp4 epNN_partN.mp4`. It crushes the blacks, pushes red into the shadows, pulls other colours down, and adds a vignette and film grain. Make the covers from graded frames too.
 - **Check that the subtitles and the PART badge stay readable after the grade.** Phones are watched in daylight, so dark is good but invisible is not. Compare average brightness before and after: a graded frame should keep at least ~55% of the original. If a scene goes nearly black, paint it brighter instead of skipping the grade.
 
+## 2d. Art style: "2.1D" — flat but creative (Nova's choice, 2026-11-24)
+Nova prefers FLAT colours, but with more creativity and depth. Reference: `toolkit/demo25_myanmar.py` and `toolkit/depth.py`; see the test frame by running `STYLE=flat21 python3 toolkit/demo25_myanmar.py still test.png`.
+- Characters and props: draw a mask, then `inflate_shade(mask, base_colour, radius=..., rim=(255,55,40))` from `toolkit/depth.py`, with `os.environ["STYLE"]="flat21"` set at the top of the render script. That gives flat colour + ONE shadow side + a thin red edge light. No glossy/3D look.
+- Depth: 4–6 layers (sky, far, mid, ground, near, blurred foreground). Blur far layers a little with `dof()`, blur the foreground strongly (~9). Fog bands BETWEEN layers, not only at the bottom.
+- Camera: every scene moves — slow push-in (zoom 1.0→1.08) plus parallax (layers shift by camera × depth: far 0.15, mid 0.35–0.6, ghost 0.8, near 1.0, foreground 1.6).
+- Light: a strong light source in frame (moon, lantern, candle) with a soft glow; `god_rays()` through trees/windows where it fits; floating embers/dust with `bokeh_particles()`.
+- Ghost: floats/sways, glowing eyes that pulse, a soft red aura behind the body; hair over the face. Still no gore.
+- Show one frame per scene before the full render and fix anything flat, empty or cluttered.
+
 ## 3. Visual rules (avoid "template" content)
 
 - **Use the same series brand every time:**
