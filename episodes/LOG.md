@@ -10,8 +10,8 @@ Times are Singapore time. Channel: YouTube channel UC18Ih1Y9aLHpD1C8fqWDIwQ. Met
 | 02 | Thailand / Nang Tani | 2 | She wanted her ribbons back... 😨 \| Ghosts of Asia: Thailand (Part 2) | 2026-11-22 19:00 (Metricool) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=-8411559200260079191 |
 | 03 | Japan / Kuchisake-onna | 1 | She asks just ONE question... 😷 \| Ghosts of Asia: Japan (Part 1) | 2026-11-22 22:05 (Metricool, moved up by Nova; video ep03_part1_v2.mp4) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=1238129735794180244 |
 | 03 | Japan / Kuchisake-onna | 2 | Then she pulled down her mask... 😱 \| Ghosts of Asia: Japan (Part 2) | 2026-11-22 22:10 (Metricool, moved up by Nova) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=-1739787922151814777 |
-| 04 | Philippines / Manananggal | 1 | Only her LEGS were there... 😨 \| Ghosts of Asia: Philippines (Part 1) | 2026-11-23 07:00 (Metricool) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=-7093068562470453060 |
-| 04 | Philippines / Manananggal | 2 | Pour the salt. NOW! 🧂 \| Ghosts of Asia: Philippines (Part 2) | 2026-11-23 07:05 (Metricool) | https://app.metricool.com/planner/calendar?blogId=8271706&openWithPostUuid=3958106602494118623 |
+| 04 | Philippines / Manananggal | 1 | Only her LEGS were there... 😨 \| Ghosts of Asia: Philippines (Part 1) | 2026-11-23 07:00 (Metricool, posted) | https://www.youtube.com/shorts/6OJ2vVaQ7S4 |
+| 04 | Philippines / Manananggal | 2 | Pour the salt. NOW! 🧂 \| Ghosts of Asia: Philippines (Part 2) | 2026-11-23 07:05 (Metricool, posted) | https://www.youtube.com/shorts/LNR3cCNdpgk |
 
 ## Notes
 - Ep01 pinned comment idea: "Would YOU have turned around? 👀"
@@ -30,3 +30,4 @@ Times are Singapore time. Channel: YouTube channel UC18Ih1Y9aLHpD1C8fqWDIwQ. Met
 - Ep04 production (2026-11-22 22:05, scheduled run): new world (tropical barrio at dusk and night: nipa huts on stilts, capiz-shell windows, coconut palms, mango tree, fireflies; lamplit bamboo room; night-to-dawn time-lapse; woven banig explainer). Ghost: flying upper half with bat wings, wild hair, glowing yellow eyes; the lower half is a checked patadyong skirt with the top always hidden in mist (no gore). P1 53.5 s / 8.0 MB, P2 67.7 s / 9.0 MB, both 1080x1920. Covers in videos/ep04_part1_thumb.jpg + ep04_part2_thumb.jpg, not sent to Metricool (channel not verified for custom thumbnails). Narrator pronunciation fix: script_v.py can now hold a SAY map (toolkit/gen_voice.py).
 - Next episode to make: ep05 Indonesia / Pocong for 2026-11-23 19:00 (Part 1) + 19:05 (Part 2). Then ep06 China / Jiangshi for 2026-11-24 07:00 + 07:05.
 - Next in backlog: see PLAYBOOK.md section 6.
+- 2026-11-23 09:45: ep05 Indonesia / Pocong IN PROGRESS for 2026-11-23 19:00 + 19:05 (scheduled run). Parallel runs: take the next free slot.
