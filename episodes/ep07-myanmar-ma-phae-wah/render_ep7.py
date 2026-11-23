@@ -1,4 +1,5 @@
 import json, os, subprocess, sys, time
+os.environ["STYLE"] = "flat21"
 import numpy as np
 from PIL import Image
 import sys; _EP = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, _EP); sys.path.insert(1, os.path.join(_EP, "..", "..", "toolkit"))
@@ -10,7 +11,7 @@ T = json.load(open(f"{PART}/timing.json"))
 starts = {}; acc = 0
 for s in T:
     starts[s["id"]] = acc; acc += s["dur"]
-NO_FADE_OUT = {"outro"}
+NO_FADE_OUT = {"outro", "cliff"}
 NO_FADE_IN = set()
 CAP_TOP = 1320
 
@@ -32,6 +33,9 @@ def frame(sid, f, D, caps, t, first):
                 c = c.copy(); c.putalpha(c.split()[3].point(lambda v: int(v * al)))
             img.alpha_composite(c, (int(W / 2 - c.width / 2), CAP_TOP))
     out = np.asarray(img.convert("RGB")).astype(np.float32)
+    lvl = S.hud_level(PART, sid, t, D, caps)
+    if lvl is not None and not (sid == "cliff" and t >= caps[2][2] + 0.25):
+        out = S.oil_hud(out, lvl, t)
     k = 1.0
     if sid not in NO_FADE_IN and not first:
         k *= ease(t / 0.3)

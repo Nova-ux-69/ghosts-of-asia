@@ -52,7 +52,8 @@ def gs(scale, t, step=0.0, facing=1, turn=0.0, eyes=0.0, lower=0.0, wind=-0.8, r
     if key not in _GS:
         if len(_GS) > 260:
             _GS.clear()
-        _GS[key] = ghost_side(key[0], key[1], key[2], facing, key[4], key[5], key[6], wind, rim)
+        im, info = ghost_side(key[0], key[1], key[2], facing, key[4], key[5], key[6], wind, rim)
+        _GS[key] = (shade21(im, radius=max(14, int(40 * key[0]))), info)
     return _GS[key]
 
 
@@ -61,7 +62,11 @@ def gf(scale, t, eyes=1.0, tilt=0.0, part=0.5, coffin=True):
     if key not in _GF:
         if len(_GF) > 200:
             _GF.clear()
-        _GF[key] = ghost_front(key[0], key[1], key[2], key[3], key[4], coffin)
+        im = ghost_front(key[0], key[1], key[2], key[3], key[4], coffin)
+        info = dict(im.info)
+        im = shade21(im, radius=max(20, int(60 * key[0])))
+        im.info.update(info)
+        _GF[key] = im
     return _GF[key]
 
 
@@ -92,6 +97,97 @@ EYE = glow_sprite(40, (255, 230, 210), 1.5)
 EMB = Embers(36, seed=3, area=(0, W, 300, 1700))
 EMB_IN = Embers(26, seed=5, area=(0, W, 200, 1600), color=(255, 140, 70))
 _MOVE = {}
+_FR = {}
+
+
+def grandma_front(scale=1.0, mouth=0.0, look=0.0, **kw):
+    key = ("g", round(scale, 2), round(mouth, 1), round(look, 1))
+    if key not in _FR:
+        if len(_FR) > 120:
+            _FR.clear()
+        import art_ep7
+        _FR[key] = shade21(art_ep7.grandma_front(key[1], key[2], key[3], **kw), radius=int(50 * scale), rim_k=0.6)
+    return _FR[key]
+
+
+def thiri_front(scale=1.0, look=0.0, eyes=1.0, mouth=0.0, fear=0.0, **kw):
+    key = ("t", round(scale, 2), round(look, 1), round(eyes, 1), round(mouth, 1), round(fear, 1))
+    if key not in _FR:
+        if len(_FR) > 120:
+            _FR.clear()
+        import art_ep7
+        _FR[key] = shade21(art_ep7.thiri_front(key[1], key[2], key[3], key[4], key[5], **kw), radius=int(50 * scale), rim_k=0.6)
+    return _FR[key]
+
+
+def mist_band(w, y, h, color=(120, 30, 28), alpha=120, seed=0):
+    rnd = random.Random(seed)
+    img = Image.new("RGBA", (w // 4, H // 4), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    for _ in range(w // 40):
+        x = rnd.uniform(-40, w / 4); yy = rnd.uniform(y, y + h) / 4; r = rnd.uniform(30, 90)
+        d.ellipse([x - r, yy - r / 5, x + r, yy + r / 5], fill=color + (int(alpha * rnd.uniform(0.5, 1)),))
+    return img.filter(ImageFilter.GaussianBlur(5)).resize((w, H), Image.BILINEAR)
+
+
+def rays_for(L, cam, moon, strength=0.55):
+    """Precomputed god rays from the moon through the town (PLAYBOOK 2d)."""
+    back, mid, road = L
+    occ = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    occ.alpha_composite(mid.crop((int(cam * 0.7), 0, int(cam * 0.7) + W, H)))
+    occ.alpha_composite(road.crop((int(cam), 0, int(cam) + W, H)))
+    oa = np.asarray(occ.split()[3]).astype(np.float32) / 255
+    small = np.asarray(Image.fromarray((oa * 255).astype(np.uint8)).resize((W // 3, H // 3))).astype(np.float32) / 255
+    r = god_rays(np.zeros((H // 3, W // 3, 3), np.float32), (moon[0] / 3, moon[1] / 3), small, color=(255, 70, 50), strength=strength)
+    return np.asarray(Image.fromarray(np.clip(r, 0, 255).astype(np.uint8)).resize((W, H), Image.BILINEAR)).astype(np.float32)
+
+
+# ---------------------------------------------------------------- ticking clock: the lamp-oil gauge
+_HUD = {}
+
+
+def oil_hud(arr, level, t):
+    """Top-left gauge: a little lamp + a bar that empties (PLAYBOOK 2a ticking clock). Blinks red when low."""
+    key = "lamp"
+    if key not in _HUD:
+        lamp, fp = oil_lamp(0.32)
+        lbl = text_img("LAMP OIL", font(INTER_SB, 30), fill=(255, 214, 140, 255), pad=6)
+        _HUD[key] = (lamp, fp, lbl)
+    lamp, fp, lbl = _HUD[key]
+    img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).convert("RGBA")
+    x, y = 56, 236
+    box = Image.new("RGBA", (360, 92), (0, 0, 0, 0))
+    db = ImageDraw.Draw(box)
+    db.rounded_rectangle([0, 0, 359, 91], 22, fill=(10, 3, 4, 170), outline=(200, 150, 40, 200), width=2)
+    box.alpha_composite(lamp, (14, int(80 - lamp.height)))
+    box.alpha_composite(lbl, (96, 4))
+    low = level < 0.3
+    on = (not low) or (math.sin(t * 9) > -0.3)
+    col = (255, 190, 70) if level > 0.5 else ((255, 120, 40) if not low else (255, 40, 30))
+    db.rounded_rectangle([104, 50, 340, 74], 8, outline=(120, 90, 40, 255), width=2)
+    if level > 0.01 and on:
+        db.rounded_rectangle([107, 53, 107 + int(230 * level), 71], 6, fill=col + (255,))
+    img.alpha_composite(box, (x, y))
+    out = arr_of(img)
+    if level > 0.01:
+        add_glow(out, glow_sprite(14, (255, 170, 80), 1.5), x + 14 + fp[0], y + 80 - lamp.height + fp[1], 0.9 * (1 + 0.1 * math.sin(t * 20)))
+    return out
+
+
+def hud_level(part, sid, t, D, caps):
+    """How much lamp oil is left in each scene (None = no gauge)."""
+    u = t / D
+    if part == "p1":
+        return {"town": 0.95 - 0.05 * u, "warn": 0.85 - 0.05 * u, "look": 0.7 - 0.35 * u, "call": 0.32 - 0.04 * u,
+                "cliff": 0.27 - 0.05 * u}.get(sid)
+    if sid == "recap":
+        return None          # the series header sits there
+    if sid == "pray":
+        out_t = caps[2][2] - 0.3
+        return max(0.0, 0.2 * (1 - t / out_t))
+    if sid in ("door", "empty"):
+        return 0.0
+    return None
 
 
 # ======================================================================= the street (wide world)
@@ -114,6 +210,8 @@ def street(sw=W + 200, seed=1, dawn=False, moon=(820, 360)):
     back.alpha_composite(hill(sw, 1010, 50, far_c, seed + 2))
     z = zedi(0.62, color=far_c[:3] + (255,), rim=(255, 150, 80) if dawn else (255, 90, 60), gold=0.7 if dawn else 0.0)
     back.alpha_composite(z, (110, 1000 - z.height + 30))
+    back = dof(back, 2.2)
+    back.alpha_composite(mist_band(sw, 930, 160, color=(150, 60, 40) if dawn else (110, 26, 24), seed=seed))
     mid = Image.new("RGBA", (sw, H), (0, 0, 0, 0))
     rnd = random.Random(seed)
     x = -120
@@ -126,6 +224,8 @@ def street(sw=W + 200, seed=1, dawn=False, moon=(820, 360)):
             tr = tamarind(rnd.uniform(0.45, 0.6), color=mid_c, seed=int(x))
             mid.alpha_composite(tr, (int(x), 1190 - tr.height))
             x += tr.width * 0.6
+    mid = dof(mid, 1.0)
+    mid.alpha_composite(mist_band(sw, 1110, 120, color=(150, 60, 40) if dawn else (100, 22, 20), alpha=90, seed=seed + 5))
     road = Image.new("RGBA", (sw, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(road)
     d.rectangle([0, 1170, sw, H], fill=sil)
@@ -155,7 +255,8 @@ def make_hook(D, caps):
     hdr = series_header("MYANMAR", "PART 1")
     t2 = caps[1][1]
     stop_t = t2 - 0.4
-    fg = tamarind(1.3, seed=9)
+    fg = dof(tamarind(1.3, seed=9), 9)
+    RAYS = rays_for(L, 20, (820 - 6, 360), 0.5)
 
     def f(t):
         img = street_view(L, cam=40 * t / D)
@@ -170,6 +271,9 @@ def make_hook(D, caps):
         if t > jump:
             z += 0.6 * ease((t - jump) / 0.12)
             cx, cy = fx, fy
+        if t < jump:
+            ra = Image.fromarray(np.clip(arr_of(img) + RAYS, 0, 255).astype(np.uint8)).convert("RGBA")
+            img = ra
         img = zoom(img, z, cx, cy)
         if t > jump:
             g = gf(1.5, t, eyes=1.0, tilt=35 + 4 * math.sin(t * 30), part=0.7)
@@ -437,12 +541,23 @@ def doorstep_scene(seed=5):
 def make_cliff(D, caps):
     base, step = doorstep_scene()
     t1, t2 = caps[1][1], caps[2][1]
-    big_t = text_img("PART 2 IS UP NOW", font(LORA, 96, "Bold"), fill=CREAM, glow=(200, 30, 30, 255), pad=24)
-    sub_t = text_img("Watch it next on our channel", font(INTER_M, 42), fill=(236, 222, 214, 255), pad=12)
+    jump = caps[2][2] + 0.25
+    fbg = crimson_sky(moon=(300, 330), moon_r=60, seed=41)
     # approach cuts: each cut she is closer (no frames in between)
     cuts = [(0.0, 140, 1640, 0.42), (1.3, 420, 1700, 0.6), (2.5, 640, 1790, 0.82), (3.5, 760, 1880, 1.0)]
 
     def f(t):
+        if t >= jump + 0.4:
+            return np.zeros((H, W, 3), np.float32)              # hard cut to black on the scare hit
+        if t >= jump:
+            img = fbg.copy()
+            g = gf(1.9, t, eyes=1.0, tilt=-25 + 5 * math.sin(t * 40), part=0.8)
+            img.alpha_composite(g, (int(W / 2 - g.width / 2), int(900 - g.info["face"][1])))
+            img = zoom(img, 1.0 + 0.6 * ease((t - jump) / 0.1), W / 2, 900)
+            img = shake_img(img, t, 24)
+            arr = arr_of(img)
+            flash(arr, t, jump, frames=3)
+            return post(arr, t, vig=VIG_HEAVY, tint=RED_TINT)
         img = base.copy()
         if t < t1 - 0.1:
             k = max(i for i, c in enumerate(cuts) if t >= c[0])
@@ -457,18 +572,14 @@ def make_cliff(D, caps):
                 arr *= 1.25
         else:
             u = ease((t - t1) / max(0.5, t2 - t1 - 0.3))
-            put_ghost(img, 820, 1880, 1.0, t, step=0.0, facing=1, lower=0.85 * u, wind=-1.0)
-            z = 1.05 + 0.25 * u
-            img = zoom(img, z, 760, 1300)
+            put_ghost(img, 820, 1880, 1.0, t, step=0.0, facing=1, lower=0.85 * u, wind=-1.0,
+                      turn=0.9 * ease((t - t2 - 0.5) / 1.5), eyes=ease((t - t2 - 1.2) / 0.4))
+            z = 1.05 + 0.25 * u + 0.35 * ease((t - t2) / (jump - t2))
+            img = zoom(img, z, 760, 1300 - 250 * ease((t - t2) / (jump - t2)))
             arr = arr_of(img)
         EMB.draw(arr, t, 0.6)
         fog_layer(arr, t, k=0.28, color=FOG_C, y0=0.6)
-        arr = post(arr, t, vig=VIG_HEAVY, tint=RED_TINT)
-        a1 = ease((t - t2 + 0.2) / 0.5)
-        if a1 > 0:
-            arr *= 1 - 0.5 * a1
-            arr = compose(arr, [centered(big_t, 220, a1), centered(sub_t, 360, ease((t - t2 - 0.3) / 0.5))])
-        return arr
+        return post(arr, t, vig=VIG_HEAVY, tint=RED_TINT)
     return f
 
 
@@ -650,7 +761,31 @@ def make_dawn(D, caps):
         dr.ellipse([bx - 36, by - 36, bx + 36, by + 36], fill=(180, 130, 24, 255))
         return down(im)
 
+    t2 = caps[2][1]
+    LN = street(W + 200, seed=17, moon=(820, 330))
+    across_on, ainfo = teak_house(1.15, seed=12, lit=1.0, shutter=0.85, rim=(150, 34, 24))
+    across_off, _ = teak_house(1.15, seed=12, lit=0.0, shutter=0.85, rim=(150, 34, 24))
+    off_t = caps[2][2] - 0.6
+
     def f(t):
+        if t >= t2 - 0.15:
+            u = (t - t2) / (D - t2)
+            img = street_view(LN, 60)
+            on = t < off_t or (off_t + 0.1 < t < off_t + 0.18)
+            hs = across_on if on else across_off
+            hx, hy = 160, 1330 - hs.height
+            img.alpha_composite(hs, (hx, hy))
+            if t > off_t - 1.6:                                   # the woman in yellow, at THEIR door now
+                put_ghost(img, hx + 660, 1340, 0.5, t, step=0.0, facing=-1, wind=-0.8, lower=0.6)
+            z = 1.1 + 0.25 * ease(u)
+            img = zoom(img, z, 600, 1050)
+            arr = arr_of(img)
+            if on:
+                wx, wy = zmap(hx + ainfo["win"][0], hy + ainfo["win"][1], z, 600, 1050)
+                add_glow(arr, LGLOW_BIG, wx, wy + 40, 0.4 * (1 + 0.1 * math.sin(t * 17)))
+            fog_layer(arr, t, k=0.25, color=FOG_C, y0=0.55)
+            EMB.draw(arr, t, 0.5)
+            return post(arr, t, vig=VIG_HEAVY, tint=RED_TINT)
         if t < t1 - 0.15:
             u = t / t1
             img = street_view(L, 120 * u)

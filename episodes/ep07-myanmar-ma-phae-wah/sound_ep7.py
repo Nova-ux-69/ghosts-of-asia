@@ -5,7 +5,7 @@ Scares use toolkit/sfx.py: riser -> silence -> braam + sub_drop + glitch + disso
 import json, os, sys, numpy as np, soundfile as sf
 from scipy.signal import lfilter, butter, sosfilt
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "toolkit"))
-from sfx import braam, sub_drop, riser, pulse_beat, heartbeat_accel, reverse_whisper, glitch, dissonant_strings
+from sfx import braam, sub_drop, riser, pulse_beat, heartbeat_accel, reverse_whisper, glitch, dissonant_strings, dog_howl, dog_pack
 PART = sys.argv[1]; SR = 24000
 T = json.load(open(f"{PART}/timing.json"))
 st = {}; acc = 0
@@ -135,7 +135,7 @@ def pre_scare(t, rise=2.2, gap=.4):
     hush.append((t - gap, t))
 
 hush = []
-LV = dict(hook=.8, town=.35, warn=.3, look=.6, call=.8, cliff=.9, recap=.6, pray=.5, door=.8, empty=.4, dawn=.2, explain=.3, outro=.3)
+LV = dict(hook=.8, town=.35, warn=.3, look=.6, call=.8, cliff=.9, recap=.6, pray=.5, door=.8, empty=.4, dawn=.4, explain=.3, outro=.3)
 WIND = dict(hook=.7, town=.4, warn=.1, look=.2, call=.4, cliff=.6, recap=.6, pray=.1, door=.3, empty=.5, dawn=.3, explain=0, outro=0)
 def curve(D, a):
     c = np.zeros(N)
@@ -183,8 +183,15 @@ if PART == "p1":
         add(glitch(.3, .6), cl + c, .2 * (k % 2 * 2 - 1)); add(boom(.5 + .1 * k), cl + c)
     add(creak(2.6, 1.4, 120), cap("cliff", 1) + .3, .2)
     add(thud(1.0), cap("cliff", 2) - .35)
-    add(heartbeat_accel(cap("cliff", 2) - cap("cliff", 1), .9, .5, .9), cap("cliff", 1))
-    add(braam(3.0, .8), cap("cliff", 2) - .1); add(reverse_whisper(1.6, .8), cap("cliff", 2) + 1.4, .3)
+    jump3 = cap("cliff", 2, 2) + .25
+    add(heartbeat_accel(jump3 - cap("cliff", 1), .9, .42, 1.0), cap("cliff", 1))
+    add(reverse_whisper(1.6, .8), cap("cliff", 2) + .2, .3)
+    pre_scare(jump3, 1.6, .35); scare(jump3, 1.1)
+    # dogs (PLAYBOOK 2b): a pack at the start, far single howls under the build-ups, cut before each scare
+    add(dog_pack(7.0, .7, 1.0), .2, -.4)
+    add(dog_howl(4.0, 500, .75, .9, seed=3), st["town"] + 5.5, .5)
+    add(dog_howl(3.5, 560, .7, .9, seed=4), st["look"] + 1.0, -.6)
+    add(dog_howl(3.5, 470, .8, .8, seed=5), st["cliff"] + 1.0, .6)
 else:
     add(boom(.6), st["recap"] + .05)
     add(creak(2.8, 1.2, 120), cap("recap", 1) + .3, .2); add(thud(.7), cap("recap", 1) + 3.0)
@@ -210,8 +217,15 @@ else:
     add(reverse_whisper(1.6, .9), st["empty"] + .2, .4)
     dw = st["dawn"]
     add(monastery_bell(1.2), dw + .2); add(monastery_bell(.8), dw + 3.2)
-    birds(dw + .5, dw + DUR["dawn"] - .3, .9)
-    melody(cap("dawn", 1), dw + DUR["dawn"] - .5, .45, .6, seed=4)
+    birds(dw + .5, cap("dawn", 2) - .3, .9)
+    melody(cap("dawn", 1), cap("dawn", 2) - .3, .45, .6, seed=4)
+    # the twist: night again, another lamp goes out across the road
+    add(dog_howl(3.5, 520, .75, .9, seed=8), cap("dawn", 2) + .1, .5)
+    shuffles(cap("dawn", 2) + .2, cap("dawn", 2, 2) - .6, 1.0, .6, -.3)
+    add(heartbeat_accel(cap("dawn", 2, 2) - cap("dawn", 2), .9, .5, .7), cap("dawn", 2))
+    add(boom(1.0), cap("dawn", 2, 2) - .6); add(reverse_whisper(1.6, 1.0), cap("dawn", 2, 2) - .4, -.3)
+    add(dog_pack(6.0, .7, .9), .3, .4)
+    add(dog_howl(4.0, 540, .75, .9, seed=6), st["pray"] + .5, -.5)
     ex = st["explain"]
     melody(ex + .3, ex + DUR["explain"] - .5, .45, .6, seed=6)
     drums(ex + .3, ex + DUR["explain"] - .5, .5, seed=7)

@@ -5,10 +5,12 @@ with a clay oil lamp. People: Thiri (a girl with thanaka on her cheeks, longyi, 
 (grey bun, maroon shawl). The ghost: Ma Phae Wah, too tall and too thin, bone-white skin, a mustard-yellow longyi
 tied at the chest, a yellow ribbon in very long black hair that waves in a wind nobody else feels, a dark teak coffin
 on her shoulder. Palette: near-black and blood red, with the only strong colour being her yellow."""
-import math, random
+import math, random, os
+os.environ.setdefault("STYLE", "flat21")          # PLAYBOOK 2d: 2.1D flat-but-creative shading
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from art_v import *
+from depth import inflate_shade, dof, god_rays
 
 # ---------------------------------------------------------------- palette
 SKY_TOP = (5, 2, 3)
@@ -744,3 +746,14 @@ def acheik_bg(top=(14, 3, 5), bot=(54, 10, 12), line=(96, 22, 20)):
     a = np.asarray(m.filter(ImageFilter.GaussianBlur(1))).astype(np.float32)[..., None] / 255 * 0.22
     base = base * (1 - a) + np.array(line, np.float32) * a
     return base
+
+
+def shade21(img, radius=40, rim=(255, 55, 40), light=(-0.55, -0.7, 0.5), rim_k=1.0):
+    """2.1D pass (PLAYBOOK 2d) on a finished flat sprite: keeps its colours, adds ONE soft shadow side and a thin
+    red edge light, using toolkit/depth.py inflate_shade on the sprite's alpha."""
+    a = img.split()[3]
+    mult = np.asarray(inflate_shade(a, (255, 255, 255), light=light, rim=(0, 0, 0), radius=radius)).astype(np.float32)[..., :3] / 255
+    rl = np.asarray(inflate_shade(a, (0, 0, 0), light=light, rim=rim, radius=radius)).astype(np.float32)[..., :3]
+    rgb = np.asarray(img).astype(np.float32)
+    rgb[..., :3] = rgb[..., :3] * mult + rl * rim_k
+    return Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8))
