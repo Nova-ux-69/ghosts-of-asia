@@ -87,6 +87,17 @@ Nova wants every episode scarier, with stronger sound. Push the fear as far as p
 - Use `reverse_whisper()` for creepy moments. Keep a low drone with wind under everything, and nothing completely quiet except the pre-scare silence.
 - The narration stays clear: duck the music under the voice, but not under the scare hits.
 
+## 2c. Horror colour grade: red and deep black (Nova's request, 2026-11-24)
+
+- **Paint every scene in a horror palette from the start.**
+  - Near-black backgrounds (#050203 to #1a0508).
+  - Blood-red and crimson light sources: lanterns, moon, glowing eyes, neon, candle glow.
+  - Pale bone-white for the ghost.
+  - Only small touches of other colours. Avoid big teal, green or blue areas unless the legend needs them, and then keep them dark.
+- **Light like a horror film.** Use one strong red key light, hard shadows, rim light on the ghost, and a red moon or red sky glow when it fits.
+- **After muxing each part, ALWAYS run the grade:** `bash ../../toolkit/grade.sh epNN_partN_raw.mp4 epNN_partN.mp4`. It crushes the blacks, pushes red into the shadows, pulls other colours down, and adds a vignette and film grain. Make the covers from graded frames too.
+- **Check that the subtitles and the PART badge stay readable after the grade.**
+
 ## 3. Visual rules (avoid "template" content)
 
 - **Use the same series brand every time:**
