@@ -162,9 +162,9 @@ Nova prefers FLAT colours, but with more creativity and depth. Reference: `toolk
 | 05 | Indonesia | Pocong |
 | 06 | China | Jiangshi (hopping corpse) |
 | 07 | Myanmar | Ma Phae Wah |
-| 08 | India | Chudail |
+| 08 | Singapore | **Pulau Tekong: the lost recruit of Charlie Company + the bunk with a 3rd door.** Nova's #1 priority: "most scary, best story, best sound, best animation, best grade". See the brief in LOG.md (2026-11-24 03:50). |
 | 09 | Cambodia | Ap (floating head with glowing organs below; show only a glowing head and a trail of light, never gore). Requested by Nova. |
-| 10 | Singapore | Requested by Nova. Pick ONE well-sourced local legend after research, for example the Hungry Ghost Festival "seventh month" rules (don't whistle at night, don't step on roadside offerings, don't sit in the empty front row at a getai). Keep it respectful: no real victims or named people. |
+| 10 | India | Chudail |
 | 11 | Vietnam | Ma Da (water ghost) |
 | 12 | Korea | Cheonyeo gwishin |
 | 13 | Japan | Hanako-san of the toilet |
