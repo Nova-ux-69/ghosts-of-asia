@@ -12,7 +12,7 @@ from scipy.ndimage import distance_transform_edt, gaussian_filter
 
 
 def inflate_shade(mask, base, light=(-0.55, -0.65, 0.55), rim=(255, 60, 60), rim_dir=(0.8, -0.2),
-                  rim_strength=0.9, radius=70, ambient=0.28, spec=0.25):
+                  rim_strength=0.9, radius=70, ambient=0.28, spec=0.25, toon=None):
     """mask: PIL 'L' or float array 0..1. base: (r,g,b). Returns RGBA PIL image the size of the mask."""
     m = np.asarray(mask, np.float32)
     if m.max() > 1.5:
@@ -31,10 +31,21 @@ def inflate_shade(mask, base, light=(-0.55, -0.65, 0.55), rim=(255, 60, 60), rim
     specular = np.clip((n * H).sum(2), 0, 1) ** 24 * spec
     rd = np.array(rim_dir, np.float32); rd /= np.linalg.norm(rd)
     rimv = (1 - n[..., 2]) ** 2.2 * np.clip(n[..., 0] * rd[0] + n[..., 1] * rd[1], 0, 1)
+    if toon is None:
+        import os; toon = os.environ.get("STYLE") == "toon"
+    if toon:   # 2.2D: flat colour bands (cartoon shading) instead of smooth 3D
+        diff = np.where(diff > 0.55, 1.0, np.where(diff > 0.2, 0.6, 0.3))
+        rimv = (rimv > 0.12).astype(np.float32) * 0.8
+        specular = (specular > spec * 0.5).astype(np.float32) * spec * 0.6
+        u = np.ones_like(u)
     ao = 0.75 + 0.25 * u                               # darker near the outline
     col = np.array(base, np.float32)[None, None] * (ambient + (1 - ambient) * diff)[..., None] * ao[..., None]
     col += np.array(rim, np.float32)[None, None] * (rimv * rim_strength)[..., None]
     col += 255 * specular[..., None]
+    if toon:   # dark ink outline
+        from scipy.ndimage import binary_dilation
+        ring = binary_dilation(inside, iterations=3) & ~binary_dilation(~inside, iterations=0) & (d < 2.5)
+        col[ring] = (12, 6, 8)
     rgba = np.dstack([np.clip(col, 0, 255), m * 255]).astype(np.uint8)
     return Image.fromarray(rgba, "RGBA")
 
