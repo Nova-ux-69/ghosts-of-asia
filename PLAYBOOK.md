@@ -108,9 +108,10 @@ If any step fails and can't be fixed, **don't post a broken video**. Write the p
 | 06 | China | Jiangshi (hopping corpse) |
 | 07 | Myanmar | Ma Phae Wah |
 | 08 | India | Chudail |
-| 09 | Vietnam | Ma Da (water ghost) |
-| 10 | Korea | Cheonyeo gwishin |
-| 11 | Japan | Hanako-san of the toilet |
-| 12 | Philippines | Tikbalang |
-| 13 | Cambodia | Ap |
-| 14 | Laos | Phi Pop |
+| 09 | Cambodia | Ap (floating head with glowing organs below; show only a glowing head and a trail of light, never gore). Requested by Nova. |
+| 10 | Singapore | Requested by Nova. Pick ONE well-sourced local legend after research, for example the Hungry Ghost Festival "seventh month" rules (don't whistle at night, don't step on roadside offerings, don't sit in the empty front row at a getai). Keep it respectful: no real victims or named people. |
+| 11 | Vietnam | Ma Da (water ghost) |
+| 12 | Korea | Cheonyeo gwishin |
+| 13 | Japan | Hanako-san of the toilet |
+| 14 | Philippines | Tikbalang |
+| 15 | Laos | Phi Pop |
