@@ -65,6 +65,28 @@ If any step fails and can't be fixed, **don't post a broken video**. Write the p
 - **Pace.** Change the shot every 5–10 seconds, and put a visual change on every key line: zooms, glows, reveals.
 - **Length.** Each part should be 45–65 seconds.
 
+## 2b. Make it SCARY (Nova's request, 2026-11-24)
+
+Nova wants every episode scarier, with stronger sound. Push the fear as far as possible **without gore**: no blood, no wounds, no body horror. Those rules keep the videos ad-friendly and out of YouTube's "off-putting content" category.
+
+**Scarier ghost design and motion**
+- Make the ghost unnatural: too tall, limbs too long, head tilted at a wrong angle, glowing or pale eyes, a face mostly hidden or seen only for a split second.
+- It moves wrong:
+  - jerky "stop-motion" steps (skip frames)
+  - it is suddenly closer each time the camera cuts back
+  - a slow head turn toward the camera
+  - a teleport with a glitch flicker
+- Use at least **one false scare and one real jump scare per part**. The real one is a fast zoom to the ghost's face, a white or red flash for 2–3 frames, camera shake and a loud hit.
+- Give the viewer more information than the hero: let them see the ghost in the background before the character does. A shape in the window, a figure behind a tree.
+- Make it darker overall: deeper shadows, heavy vignette, flickering light sources, fog in front of the camera.
+
+**Stronger sound (use `toolkit/sfx.py`)**
+- Every build-up has a beat under it: `pulse_beat()` (drums that speed up) plus `heartbeat_accel()`.
+- Right before the scare: `riser()`, then 0.3–0.5 s of **total silence**. Duck the drone too.
+- On the scare: `braam()` + `sub_drop()` + `glitch()` + `dissonant_strings()`, loud. This is the loudest moment of the video, about 3 dB above the narration.
+- Use `reverse_whisper()` for creepy moments. Keep a low drone with wind under everything, and nothing completely quiet except the pre-scare silence.
+- The narration stays clear: duck the music under the voice, but not under the scare hits.
+
 ## 3. Visual rules (avoid "template" content)
 
 - **Use the same series brand every time:**
