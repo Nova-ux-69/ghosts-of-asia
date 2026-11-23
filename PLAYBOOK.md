@@ -96,7 +96,7 @@ Nova wants every episode scarier, with stronger sound. Push the fear as far as p
   - Only small touches of other colours. Avoid big teal, green or blue areas unless the legend needs them, and then keep them dark.
 - **Light like a horror film.** Use one strong red key light, hard shadows, rim light on the ghost, and a red moon or red sky glow when it fits.
 - **After muxing each part, ALWAYS run the grade:** `bash ../../toolkit/grade.sh epNN_partN_raw.mp4 epNN_partN.mp4`. It crushes the blacks, pushes red into the shadows, pulls other colours down, and adds a vignette and film grain. Make the covers from graded frames too.
-- **Check that the subtitles and the PART badge stay readable after the grade.**
+- **Check that the subtitles and the PART badge stay readable after the grade.** Phones are watched in daylight, so dark is good but invisible is not. Compare average brightness before and after: a graded frame should keep at least ~55% of the original. If a scene goes nearly black, paint it brighter instead of skipping the grade.
 
 ## 3. Visual rules (avoid "template" content)
 
