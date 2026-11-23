@@ -118,6 +118,7 @@ Nova prefers FLAT colours, but with more creativity and depth. Reference: `toolk
 - Camera: every scene moves — slow push-in (zoom 1.0→1.08) plus parallax (layers shift by camera × depth: far 0.15, mid 0.35–0.6, ghost 0.8, near 1.0, foreground 1.6).
 - Light: a strong light source in frame (moon, lantern, candle) with a soft glow; `god_rays()` through trees/windows where it fits; floating embers/dust with `bokeh_particles()`.
 - Ghost: floats/sways, glowing eyes that pulse, a soft red aura behind the body; hair over the face. Still no gore.
+- **Country flag at the start (Nova, 2026-11-24):** the hook (Part 1) and recap (Part 2) show the country's flag, waving, above the "GHOSTS OF ASIA / COUNTRY / PART" header, so viewers instantly know the country. Draw it in code (see `sg_flag()` / `flag_layer()` in episodes/ep08-singapore-tekong/scenes_ep8.py). Also show it on the explain and outro cards.
 - Show one frame per scene before the full render and fix anything flat, empty or cluttered.
 
 ## 3. Visual rules (avoid "template" content)
