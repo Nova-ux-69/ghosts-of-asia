@@ -32,7 +32,14 @@ def inflate_shade(mask, base, light=(-0.55, -0.65, 0.55), rim=(255, 60, 60), rim
     rd = np.array(rim_dir, np.float32); rd /= np.linalg.norm(rd)
     rimv = (1 - n[..., 2]) ** 2.2 * np.clip(n[..., 0] * rd[0] + n[..., 1] * rd[1], 0, 1)
     if toon is None:
-        import os; toon = os.environ.get("STYLE") == "toon"
+        import os; toon = os.environ.get("STYLE") in ("toon", "flat21")
+    import os
+    if os.environ.get("STYLE") == "flat21":   # 2.1D: flat colour, ONE soft shadow side, thin red edge light
+        diff = np.where(diff > 0.3, 1.0, 0.72)
+        rimv = (rimv > 0.18).astype(np.float32) * 0.7
+        specular = np.zeros_like(specular)
+        u = np.ones_like(u)
+        toon = False
     if toon:   # 2.2D: flat colour bands (cartoon shading) instead of smooth 3D
         diff = np.where(diff > 0.55, 1.0, np.where(diff > 0.2, 0.6, 0.3))
         rimv = (rimv > 0.12).astype(np.float32) * 0.8
