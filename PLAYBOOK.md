@@ -57,13 +57,25 @@ If any step fails and can't be fixed, **don't post a broken video**. Write the p
 - **Hook in the first 2 seconds.** Open with a rule, a warning or a question, never with "Hello". Examples: "If you hear…, pray that…" or "In Japan, never answer this question…". Put the country name on screen immediately.
 - **Open loops.** Part 1 must end on an unanswered question, with "PART 2 IS UP NOW" on screen. The last narration line should say something like "Part two is up now."  Part 2 starts with a 5-second recap, so new viewers aren't lost.
 - **Give the audience more information than the hero has.** Let viewers see the ghost before the character does. This builds tension and replays.
-- **Use the rule-breaking structure.** Show a warning, show someone breaking it, then show the consequence. This is the most shareable shape for folklore.
+- **Use the rule-breaking structure** (inside the survival story of 2a). Show a warning, show someone breaking it, then show the consequence. This is the most shareable shape for folklore.
 - **Teach something true.** Part 2 explains the real legend in simple words, with 2–3 facts. This makes the videos "authentic, original value", which protects monetization under YouTube's inauthentic-content policy.
 - **Comment bait that's genuine.** End Part 2 with a question viewers want to answer, such as "Which country next?", "Would you turn around?" or "Have you heard this story from your grandma?".
 - **Keep the language simple.** Use short sentences and big subtitles. Many viewers watch on mute or in their second language.
 - **Never show gore.** Creepy is fine, but avoid disturbing images. This keeps the videos ad-friendly and out of the "off-putting content" category.
 - **Pace.** Change the shot every 5–10 seconds, and put a visual change on every key line: zooms, glows, reveals.
 - **Length.** Each part should be 45–65 seconds.
+
+## 2a. SURVIVAL THRILLER story (Nova's request, 2026-11-24) — this comes first
+Every episode is a **survival story**, not a lecture. The viewer should feel "would I make it out?" from start to finish.
+- **A hero the viewer becomes.** One ordinary person (a student walking home, a night-shift worker, a tourist, a taxi driver), given a name and ONE goal in the first 10 seconds ("Ko Min just needs to get home before midnight").
+- **Talk to the viewer as "you" at key moments** ("If you were Min, would you run?"). Second-person lines on choices make people stay.
+- **A ticking clock.** Something runs out: the phone battery, the last bus, the candle, the time until sunrise, the fuel. Show it on screen (a battery icon, a clock, a candle getting shorter).
+- **The survival rule from the legend.** Every legend has a rule that saves you (don't answer, hold your breath, don't look back, salt, a bell, sunrise). Show the rule early as a warning, so viewers watch for it.
+- **Escalate in 3 steps.** Something small and wrong → proof it is real and following → trapped with no way out. Every 10–15 seconds the danger gets closer.
+- **A wrong choice and a near miss.** The hero makes one mistake (looks back, answers, drops the charm) and only just escapes. Use a hiding scene: under a bed, in a cupboard, behind a tombstone, holding their breath while the ghost passes inches away.
+- **Part 1 ends at the worst moment**: the hero is trapped and the ghost is right there. Last line: a choice for the viewer ("Run… or hide? Part two is up now.").
+- **Part 2: the escape.** The hero uses the rule at the last second. Then a twist in the final 5 seconds (the ghost isn't gone, it followed someone else, or it's behind the viewer), THEN the true-legend facts and the comment question ("Would YOU have survived?").
+- Keep it grounded: real places, real local details (food, street names, transport) so it feels like it could happen tonight.
 
 ## 2b. Make it SCARY (Nova's request, 2026-11-24)
 
