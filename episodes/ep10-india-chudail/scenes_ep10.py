@@ -33,8 +33,36 @@ def ss(t, a, b):
     return ease((t - a) / max(1e-3, b - a))
 
 
+def inflate21(mask, base, light=(-0.55, -0.7, 0.5), rim=(255, 55, 40), radius=40, rim_strength=0.9, **_):
+    """STRONGER 2.1D (Nova, 2026-11-25: "make it 2.1D"): flat colour, a clear shadow side (55%),
+    a wider bright red edge light, darker edges. Same idea as depth.inflate_shade(STYLE=flat21), more visible."""
+    from scipy.ndimage import distance_transform_edt, gaussian_filter
+    m = np.asarray(mask, np.float32)
+    if m.max() > 1.5:
+        m = m / 255.0
+    inside = m > 0.5
+    d = gaussian_filter(distance_transform_edt(inside).astype(np.float32), max(1.5, radius * 0.05))
+    u = np.clip(d / radius, 0, 1)
+    h = gaussian_filter(np.sqrt(1 - (1 - u) ** 2) * radius, max(2.0, radius * 0.04))
+    gy, gx = np.gradient(h)
+    n = np.dstack([-gx, -gy, np.ones_like(h)]); n /= np.linalg.norm(n, axis=2, keepdims=True)
+    L = np.array(light, np.float32); L /= np.linalg.norm(L)
+    diff = np.clip((n * L).sum(2), 0, 1)
+    tone = np.where(diff > 0.32, 1.0, 0.55)
+    rd = np.array((0.8, -0.2), np.float32); rd /= np.linalg.norm(rd)
+    rimv = (1 - n[..., 2]) ** 2.0 * np.clip(n[..., 0] * rd[0] + n[..., 1] * rd[1], 0, 1)
+    rimv = (rimv > 0.1).astype(np.float32)
+    rimv = gaussian_filter(rimv, 0.8)
+    ao = 0.8 + 0.2 * np.clip(d / 6.0, 0, 1)
+    col = np.array(base, np.float32)[None, None] * tone[..., None] * ao[..., None]
+    col += np.array(rim, np.float32)[None, None] * (rimv * rim_strength * 0.95)[..., None]
+    return Image.fromarray(np.dstack([np.clip(col, 0, 255), m * 255]).astype(np.uint8), "RGBA")
+
+
 def shade(draw_fn, size, base, radius, **kw):
-    return D5.shaded(draw_fn, size, base, radius, **kw)
+    m = D5.smooth_mask(draw_fn, size)
+    return inflate21(m, base, light=kw.pop("light", D5.LIGHT), rim=kw.pop("rim", D5.RIM), radius=radius,
+                     rim_strength=kw.pop("rim_strength", 0.9))
 
 
 def to_arr(img):

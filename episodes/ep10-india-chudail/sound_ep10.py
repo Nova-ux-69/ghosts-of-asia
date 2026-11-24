@@ -297,6 +297,78 @@ def whisper(text="Arjun...", voice="af_nicole", g=1.0):
             print("whisper failed", e); WH[text] = np.zeros(SR)
     return WH[text] * g
 
+# ---- NEW (Nova 2026-11-25): a signature sound for the Chudail + a different scare kit for Part 2
+from scipy.signal import resample
+LAUGH = {}
+def ghost_laugh(g=1.0):
+    """Her laugh: a soft female 'hee hee hee', slowed and pitched down, doubled an octave lower, drowned in reverb,
+    with a reversed swell leading into it."""
+    if "x" not in LAUGH:
+        try:
+            from kokoro_onnx import Kokoro
+            tk = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "toolkit", "models")
+            k = Kokoro(os.path.join(tk, "kokoro.onnx"), os.path.join(tk, "voices.bin"))
+            a, sr = k.create("Hee hee hee... hee hee...", voice="af_nicole", speed=0.8, lang="en-us")
+            a = np.asarray(a, float)
+            if sr != SR:
+                a = resample(a, int(len(a) * SR / sr))
+            slow = resample(a, int(len(a) * 1.25))                    # lower + slower
+            low = resample(a, int(len(a) * 2.0))[:len(slow)] * .45    # an octave under it
+            v = slow + np.pad(low, (0, max(0, len(slow) - len(low))))
+            v = bp(v, 120, 6000)
+            v = v / (np.abs(v).max() + 1e-9)
+            wet = verb(v * .3, .85)
+            pre = verb(v[::-1] * .15, .85)[::-1][-int(1.2 * SR):]
+            LAUGH["x"] = np.concatenate([pre * np.linspace(0, 1, len(pre)), wet])
+        except Exception as e:
+            print("laugh failed", e); LAUGH["x"] = np.zeros(SR)
+    return LAUGH["x"] * g
+def bone_crack(g=1.0, n=6):
+    """Joints twisting (her backward feet): a burst of dry cracks over a low knock."""
+    o = np.zeros(int(1.2 * SR)); t = 0.0
+    for k in range(n):
+        m = int(.04 * SR); x = np.arange(m) / SR
+        c = bp(rng.standard_normal(m), 1200, 7000) * np.exp(-x * 260) * rng.uniform(.5, 1)
+        c += np.sin(2 * np.pi * rng.uniform(140, 260) * x) * np.exp(-x * 120) * .5
+        i = int(t * SR); o[i:i + m] += c; t += rng.uniform(.03, .13)
+    return verb(o * .45 * g, .35)
+def moan(dur=2.6, g=1.0):
+    """A low, hollow female moan ('ooooh') that sinks in pitch, with an octave-down shadow under it."""
+    n = int(dur * SR); x = np.arange(n) / SR
+    f = (230 - 70 * x / dur) * (1 + .02 * np.sin(2 * np.pi * 4.6 * x))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    src = sum(np.sin(h * ph) / h ** 1.2 for h in range(1, 16)) + .5 * sum(np.sin(h * ph / 2) / h ** 1.2 for h in range(1, 10))
+    v = bp(src, 260, 380) + bp(src, 700, 950) * .6 + bp(rng.standard_normal(n), 300, 2000) * .15
+    v *= env(n, .5, .9)
+    return verb(v / (np.abs(v).max() + 1e-9) * .12 * g, .85)
+def violin_screech(dur=1.2, g=1.0):
+    n = int(dur * SR); x = np.arange(n) / SR
+    f = 1500 + 1100 * (x / dur) ** .5
+    ph = 2 * np.pi * np.cumsum(f * (1 + .01 * np.sin(2 * np.pi * 9 * x))) / SR
+    saw = sum(np.sin(h * ph) / h for h in range(1, 12)) + .7 * sum(np.sin(h * ph * 1.059) / h for h in range(1, 8))
+    s = bp(saw + bp(rng.standard_normal(n), 2000, 9000) * .4, 900, 9000)
+    return verb(s * env(n, .01, .5) * .09 * g, .5)
+def metal_scrape(dur=3.0, g=1.0):
+    n = int(dur * SR); x = np.arange(n) / SR
+    s = bp(rng.standard_normal(n), 1800, 6500) * (.5 + .5 * np.abs(np.sin(2 * np.pi * (3 + 4 * x / dur) * x)))
+    s += sum(np.sin(2 * np.pi * f * x) * .15 for f in (2213, 3371, 4789)) * (.6 + .4 * np.sin(2 * np.pi * .7 * x))
+    return verb(s * env(n, .4, .8) * .08 * g, .6)
+def boom(g=1.0):
+    n = int(3 * SR); x = np.arange(n) / SR
+    s = np.sin(2 * np.pi * (55 - 20 * x / 3) * x) * np.exp(-x * 1.6) + lp(rng.standard_normal(n), .02) * np.exp(-x * 6) * 2
+    return verb(s * .5 * g, .7)
+def choir_stab(g=1.0):
+    """A dissonant 'aah' cluster hit (minor second + tritone), short and loud."""
+    n = int(2.2 * SR); x = np.arange(n) / SR; o = np.zeros(n)
+    for f in (220, 233.1, 311.1, 329.6, 466.2):
+        ph = 2 * np.pi * f * x * (1 + .006 * np.sin(2 * np.pi * 5 * x + f))
+        src = sum(np.sin(h * ph) / h ** 1.3 for h in range(1, 10))
+        o += bp(src, 600, 1300) + bp(src, 1000, 2600) * .5
+    return verb(o * np.exp(-x * 1.5) * np.minimum(1, x / .01) * .05 * g, .8)
+def reverse_scream(g=1.0, dur=1.4):
+    s = shriek(dur, 1.0)[::-1]
+    return s * np.linspace(0, 1, len(s)) ** 2 * g
+
 LV = dict(hook=.8, road=.25, rule=.15, tree=.5, woman=.8, mistake=.8, cliff=.9, recap=.6, steps=.85, escape=.6, bell=.4, twist=.25, explain=.3, outro=.25)
 WIND = dict(hook=.9, road=.8, rule=0, tree=.6, woman=.6, mistake=.6, cliff=.15, recap=.2, steps=.15, escape=.7, bell=.4, twist=.1, explain=.4, outro=.3)
 NIGHT = dict(hook=.4, road=0, rule=0, tree=.6, woman=.4, mistake=.2, cliff=0, recap=0, steps=0, escape=.2, bell=.2, twist=0, explain=.4, outro=.3)
@@ -337,17 +409,19 @@ if PART == "p1":
     add(sfx.dog_pack(6.0, .75, 1.0), cap("tree", 1) - .2)
     add(sfx.heartbeat_accel(DUR["tree"] - (cap("tree", 1) - st["tree"]) + 1, .9, .6, .7), cap("tree", 1))
     walking(st["woman"] + .3, cap("woman", 1) - .2, .7, .8, pan=.4)
+    add(moan(2.8, .8), st["woman"] + .4, .5)
     add(whisper("Arjun...", g=.9), cap("woman", 1) + .1, .5)
     add(sfx.pulse_beat(DUR["woman"] - 3, 70, 110, .5), st["woman"] + 1.5)
     fc = cap("woman", 2) - .15
     add(sfx.riser(1.2, .7), fc - 1.2); SIL.append((fc - .3, fc))
     add(sfx.sub_drop(2.0, .9), fc); add(sfx.dissonant_strings(4.0, .6), fc); add(payal(1.0), fc + .3)
+    add(bone_crack(1.1, 8), fc + .15, .2)
     add(sfx.heartbeat_accel(DUR["mistake"], .7, .5, .8), st["mistake"])
     lo = cap("mistake", 1)
     add(sfx.riser(1.0, .5), lo - 1.0)
     add(whoosh(.6, .8), lo - .05); add(glass_clink(1.0), lo)
     SIL.append((lo + .05, lo + .7))
-    add(sfx.braam(2.5, .7), lo + .75); add(sfx.reverse_whisper(1.6, .9), lo + 1.0, .3)
+    add(sfx.braam(2.5, .7), lo + .75); add(ghost_laugh(1.0), lo + .2, .3)
     fp = cap("mistake", 2) - .1
     for k in range(7): add(sand_step(.9), fp + k * .32, (-.2 if k % 2 else .2)); add(payal(.5), fp + k * .32 + .01)
     add(sfx.dissonant_strings(4.0, .5), fp + 1.0)
@@ -356,8 +430,13 @@ if PART == "p1":
     c1 = cap("cliff", 1)
     t_ = c1 - .3
     jt = st["cliff"] + C["cliff"][2][2] + .15
+    kk = 0
     while t_ < jt - 1.0:
-        add(stone_step(1.0), t_); add(payal(1.1), t_ + .01); t_ += .55
+        add(stone_step(1.0), t_); add(payal(1.1), t_ + .01)
+        if kk % 2 == 1:
+            add(bone_crack(.7, 4), t_ + .08, .1)
+        t_ += .55; kk += 1
+    add(moan(3.0, 1.0), c1 + .2, 0.0)
     m0, m1 = c1 + .5, st["cliff"] + DUR["cliff"]
     m = np.ones(N); m[int(m0 * SR):int(m1 * SR)] = .5; m = lp(m, .0008); L *= m; R *= m
     add(sfx.heartbeat_accel(jt - m0, .9, .45, 1.1), m0)
@@ -365,7 +444,7 @@ if PART == "p1":
     add(sfx.dissonant_strings(5.0, .5), cap("cliff", 2))
     add(sfx.riser(1.6, 1.0), jt - 1.75)
     SIL.append((jt - .4, jt))
-    scare(jt, 1.2)
+    scare(jt, 1.2); add(bone_crack(1.2, 6), jt + .02)
 else:
     add(sfx.sub_drop(2.0, .7), st["recap"] + .05)
     walking(st["recap"] + .4, st["recap"] + DUR["recap"], .7, .8, stone=True)
@@ -375,10 +454,11 @@ else:
     add(whisper("Arjun...", g=1.0), st["steps"] + .4, -.3)
     add(sfx.pulse_beat(cut - st["steps"], 80, 140, .6), st["steps"])
     SIL.append((cut, cut + .5))
-    add(sfx.dissonant_strings(4.0, .6), cut + .5)
+    add(metal_scrape(3.0, 1.0), cut + .5, -.3)
+    add(moan(3.0, .9), cut + .6, .4)
     add(sfx.heartbeat_accel(st["steps"] + DUR["steps"] - cut, .8, .45, 1.0), cut + .5)
     hit = st["steps"] + C["steps"][1][2] + .2
-    add(sfx.braam(2.0, .8), hit); add(sfx.glitch(.4, .8), hit); add(sfx.sub_drop(2.0, .7), hit)
+    add(violin_screech(1.2, 1.1), hit); add(boom(1.0), hit); add(bone_crack(1.2, 8), hit + .05, .3)
     tanpura(st["escape"], cap("escape", 2) - st["escape"], .9)
     add(brass_bell(.25), cap("escape", 1) + .3, .3)
     rn = cap("escape", 2) - .1
@@ -390,17 +470,19 @@ else:
     ring = cap("bell", 1) + 1.2
     SIL.append((ring - .3, ring))
     for k in range(3): add(brass_bell(1.2 - .3 * k), ring + k * 1.1, -.2)
-    add(sfx.reverse_whisper(1.6, .9), ring + .1, -.6)
+    add(ghost_laugh(.55), ring + .3, -.7)
     birds(ring + 1.2, st["bell"] + DUR["bell"] + DUR["twist"] - 1.2, 1.0)
     add(pad(st["bell"] + DUR["bell"] - ring, (146.8, 220, 293.7), .02), ring)
     add(pad(DUR["twist"], (146.8, 185, 220), .018), st["twist"])
-    add(sfx.dissonant_strings(4.0, .45), cap("twist", 2) - .2)
-    add(payal(.9), cap("twist", 2) + .4); add(sfx.sub_drop(2.0, .6), cap("twist", 2) - .1)
+    add(metal_scrape(4.0, .8), cap("twist", 2) - .2, .3)
+    add(payal(.9), cap("twist", 2) + .4); add(bone_crack(1.0, 7), cap("twist", 2) + .2); add(boom(.6), cap("twist", 2) - .1)
     add(sfx.heartbeat_accel(DUR["twist"] - (cap("twist", 2) - st["twist"]), .9, .45, .9), cap("twist", 2))
     jt = st["twist"] + DUR["twist"] - 1.0
-    add(sfx.riser(1.6, 1.0), jt - 1.7)
-    SIL.append((jt - .35, jt))
-    scare(jt, 1.15)
+    rs = reverse_scream(1.0, 1.4)
+    add(rs, jt - len(rs) / SR)
+    SIL.append((jt - .12, jt - .02))
+    add(choir_stab(1.2), jt); add(boom(1.2), jt); add(violin_screech(1.0, .9), jt + .02)
+    add(ghost_laugh(.9), jt + .5, .2)
     tanpura(st["explain"], DUR["explain"] + DUR["outro"], 1.0)
     santoor(st["explain"] + .4, st["explain"] + DUR["explain"] - .5, .5, .65, seed=33)
     add(sfx.dog_howl(4.0, 500, .8, seed=9), st["explain"] + 6.0, .6)

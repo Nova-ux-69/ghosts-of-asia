@@ -1,0 +1,15 @@
+p2 recap 200 frames 49.1 s
+p2 steps 247 frames 108.0 s
+/home/claude/ghosts-of-asia/episodes/ep10-india-chudail/scenes_ep10.py:1022: RuntimeWarning: divide by zero encountered in divide
+  f *= (1 - 0.18 * (np.sin(300 / (yy - HZ + 6) * 9 + xx / 140) > 0.6))[..., None]
+/home/claude/ghosts-of-asia/episodes/ep10-india-chudail/scenes_ep10.py:1022: RuntimeWarning: invalid value encountered in sin
+  f *= (1 - 0.18 * (np.sin(300 / (yy - HZ + 6) * 9 + xx / 140) > 0.6))[..., None]
+/home/claude/ghosts-of-asia/episodes/ep10-india-chudail/scenes_ep10.py:1032: RuntimeWarning: divide by zero encountered in divide
+  z = 260 / (yy - HZ + 4)
+/home/claude/ghosts-of-asia/episodes/ep10-india-chudail/scenes_ep10.py:1033: RuntimeWarning: invalid value encountered in sin
+  dash = on & (np.abs(xx - 540) < half * 0.018 + 1) & (np.sin(z * 9) > 0.1)
+p2 escape 297 frames 69.6 s
+p2 bell 227 frames 205.3 s
+p2 twist 306 frames 50.7 s
+p2 explain 430 frames 112.5 s
+p2 outro 271 frames 60.8 s
