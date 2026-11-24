@@ -5,3 +5,6 @@ chk/
 *_raw.mp4
 ep08_part?.mp4
 *.log
+sketch/
+*_h.mp4
+sketch.sh

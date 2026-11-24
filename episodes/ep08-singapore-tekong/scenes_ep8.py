@@ -83,8 +83,8 @@ def soldier(phase=0.0, run=0.0, torch=True, ghost=False, back=False, scale=1.0, 
     ph = 2 * math.pi * q[0] / 12
     sw = math.sin(ph) * (0.3 + 0.7 * run)
     L = 14 * run
-    uni = (40, 52, 40) if ghost else (78, 90, 62)
-    skin = (182, 196, 190) if ghost else (190, 140, 110)
+    uni = (46, 52, 40) if ghost else (66, 80, 48)
+    skin = (168, 178, 176) if ghost else (150, 104, 78)
     def legs(d, s):
         for sg in (-1, 1):
             a = sg * sw * 0.55
@@ -128,10 +128,22 @@ def soldier(phase=0.0, run=0.0, torch=True, ghost=False, back=False, scale=1.0, 
         LL = L * 1.2
         d.rectangle([(cx - 22 + LL) * s, 140 * s, (cx + 22 + LL) * s, 200 * s], fill=255)
         d.ellipse([(cx - 52 + LL) * s, 50 * s, (cx + 52 + LL) * s, 172 * s], fill=255)
-    def helmet(d, s):
+    def helmet(d, s):   # short army haircut (no helmet, like the reference photo)
         LL = L * 1.2
-        d.pieslice([(cx - 70 + LL) * s, 20 * s, (cx + 70 + LL) * s, 160 * s], 180, 360, fill=255)
-        d.rectangle([(cx - 76 + LL) * s, 86 * s, (cx + 76 + LL) * s, 100 * s], fill=255)
+        d.pieslice([(cx - 55 + LL) * s, 44 * s, (cx + 55 + LL) * s, 150 * s], 180, 360, fill=255)
+        if ghost:   # wet hair strands stuck to the forehead
+            for k in range(5):
+                x = cx - 40 + k * 20 + LL
+                d.polygon([((x - 7) * s, 90 * s), ((x + 7) * s, 90 * s), ((x + 2) * s, (128 + 10 * (k % 2)) * s)], fill=255)
+    def vest(d, s):     # webbing with pouches
+        for x0 in (-70, -22, 26):
+            d.rounded_rectangle([(cx + x0 + L * 0.8) * s, 330 * s, (cx + x0 + 44 + L * 0.8) * s, 400 * s], int(6 * s), fill=255)
+        d.rectangle([(cx - 76 + L * 0.6) * s, 412 * s, (cx + 76 + L * 0.6) * s, 438 * s], fill=255)
+    def rifle(d, s):
+        pts = [(cx - 120, 420), (cx + 110, 260), (cx + 122, 276), (cx - 104, 438)]
+        d.polygon([((x + L) * s, y * s) for x, y in pts], fill=255)
+        d.polygon([((x + L) * s, y * s) for x, y in ((cx - 20, 360), (cx + 4, 344), (cx + 30, 400), (cx + 8, 414))], fill=255)
+        d.polygon([((x + L) * s, y * s) for x, y in ((cx - 120, 420), (cx - 170, 440), (cx - 160, 470), (cx - 104, 438))], fill=255)
     def straps(d, s):
         for sg in (-1, 1):
             d.line([((cx + sg * 55 + L) * s, 195 * s), ((cx + sg * 40 + L * 0.7) * s, 440 * s)], fill=255, width=int(16 * s))
@@ -143,7 +155,8 @@ def soldier(phase=0.0, run=0.0, torch=True, ghost=False, back=False, scale=1.0, 
     im.alpha_composite(shade(arms, (w, h), uni, 14))
     im.alpha_composite(shade(hands, (w, h), skin, 10))
     im.alpha_composite(shade(head, (w, h), skin, 30))
-    im.alpha_composite(shade(helmet, (w, h), (50, 60, 42) if not ghost else (34, 42, 34), 30))
+    im.alpha_composite(shade(vest, (w, h), (58, 64, 44) if not ghost else (36, 40, 32), 8))
+    im.alpha_composite(shade(helmet, (w, h), (16, 14, 14), 12))
     d = ImageDraw.Draw(im)
     LL = L * 1.2
     # uniform camo blotches
@@ -152,17 +165,32 @@ def soldier(phase=0.0, run=0.0, torch=True, ghost=False, back=False, scale=1.0, 
     tex = fog_texture(w, h, 17 if not ghost else 18)
     body = (a[..., 3] > 0)
     yy = np.arange(h)[:, None]
-    camo = ((tex > 0.45) & (yy > 185)).astype(np.float32)
-    a[..., :3] *= (1 - 0.25 * camo * body)[..., None]
+    t2 = fog_texture(w, h, 27 if not ghost else 28); t3 = fog_texture(w, h, 37)
+    cloth = (body & (yy > 185)) | (body & (yy < 0))
+    cl = np.zeros((h, w), bool); cl[:, :] = False
+    xx = np.arange(w)[None, :]
+    cloth = body & (yy > 185) & ~((yy > 860))
+    for m, col in (((tex > 0.5), (40, 70, 32)), ((t2 > 0.53), (78, 54, 34)), ((t3 > 0.6), (18, 18, 16))):
+        mm = (m & cloth)[..., None]
+        sh = a[..., :3] / (np.array(uni, np.float32) + 1e-3)          # keep the light/shadow of the base shading
+        lum = np.clip(sh.mean(2, keepdims=True), 0.25, 1.1)
+        a[..., :3] = np.where(mm, np.array(col, np.float32) * lum, a[..., :3])
+    if ghost:
+        a[..., :3] *= 0.6
     im = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), "RGBA")
     d = ImageDraw.Draw(im)
     if ghost:
-        # face in helmet shadow, glowing eyes later; water dripping down the uniform
-        d.rectangle([cx - 52 + LL, 100, cx + 52 + LL, 128], fill=(20, 24, 22, 230))
+        # hollow black eye sockets and an open mouth; water dripping down the uniform
+        for sg in (-1, 1):
+            d.ellipse([cx + sg * 22 - 16 + LL, 104, cx + sg * 22 + 16 + LL, 132], fill=(8, 6, 6, 255))
+        d.ellipse([cx - 12 + LL, 144, cx + 12 + LL, 166], fill=(10, 6, 6, 255))
         for x in range(int(cx - 70), int(cx + 70), 18):
             d.line([(x, 250 + (x * 7) % 60), (x, 330 + (x * 13) % 120)], fill=(120, 150, 150, 120), width=3)
-        eyes = ((cx - 20 + LL, 118), (cx + 20 + LL, 118))
+        eyes = ((cx - 22 + LL, 120), (cx + 22 + LL, 120))
     elif not back:
+        for sg in (-1, 1):        # camo face paint on the cheeks and forehead
+            d.line([(cx + sg * 44 + LL, 136), (cx + sg * 22 + LL, 142)], fill=(36, 48, 28, 150), width=7)
+        d.line([(cx - 30 + LL, 92), (cx + 26 + LL, 96)], fill=(36, 48, 28, 140), width=6)
         for sg in (-1, 1):
             d.ellipse([cx + sg * 20 - 9 + LL, 112, cx + sg * 20 + 9 + LL, 128], fill=(240, 236, 230, 255))
             d.ellipse([cx + sg * 20 - 4 + LL, 116, cx + sg * 20 + 4 + LL, 124], fill=(15, 10, 10, 255))
@@ -170,6 +198,9 @@ def soldier(phase=0.0, run=0.0, torch=True, ghost=False, back=False, scale=1.0, 
         eyes = None
     else:
         eyes = None
+    if not ghost and not back and run < 0.5:
+        im.alpha_composite(shade(rifle, (w, h), (26, 26, 26), 6, rim_strength=0.5))
+        d = ImageDraw.Draw(im)
     tp = None
     if torch and not ghost and not back:
         tx, ty = cx - 40 + L, 260
@@ -223,7 +254,7 @@ def rain(img, t, k=1.0):
     img.alpha_composite(with_alpha(r, k) if k < 1 else r)
 
 
-def tree_trunk(seed, height=1500, width=70, base=(48, 30, 26)):
+def tree_trunk(seed, height=1500, width=70, base=(34, 22, 20)):
     rng = np.random.default_rng(seed)
     w = int(width * 4) + 120
     def dr(d, s):
@@ -242,7 +273,7 @@ def tree_trunk(seed, height=1500, width=70, base=(48, 30, 26)):
 class Jungle:
     def __init__(self):
         y = np.linspace(0, 1, H)[:, None]
-        top = np.array([6, 3, 4]); mid = np.array([44, 10, 12]); hor = np.array([90, 22, 20])
+        top = np.array([3, 2, 3]); mid = np.array([26, 6, 8]); hor = np.array([58, 14, 14])
         k = np.clip(y / 0.62, 0, 1) ** 1.5
         col = top * (1 - k) + mid * k
         col = col * (1 - np.clip((y - 0.5) / 0.15, 0, 1)) + hor * np.clip((y - 0.5) / 0.15, 0, 1)
@@ -258,12 +289,12 @@ class Jungle:
         g = np.zeros((H, W, 4), np.float32)
         yy = np.arange(H)[:, None]
         gt = np.clip((yy - GY) / 700, 0, 1)
-        g[..., 0] = 42 - 30 * gt; g[..., 1] = 16 - 12 * gt; g[..., 2] = 12 - 8 * gt
+        g[..., 0] = 30 - 22 * gt; g[..., 1] = 11 - 8 * gt; g[..., 2] = 9 - 6 * gt
         g[..., :3] *= (0.6 + 0.8 * fog_texture(W, H, 63))[..., None]
         g[..., 3] = 255 * (yy >= GY)
         # red-earth track: a lighter band, wet
         track = ((yy >= GY + 40) & (yy <= GY + 170)).astype(np.float32)
-        g[..., :3] = g[..., :3] * (1 - track[..., None]) + np.array([96, 40, 26]) * (0.7 + 0.5 * fog_texture(W, H, 64))[..., None] * track[..., None]
+        g[..., :3] = g[..., :3] * (1 - track[..., None]) + np.array([70, 30, 20]) * (0.7 + 0.5 * fog_texture(W, H, 64))[..., None] * track[..., None]
         self.ground = Image.fromarray(np.clip(g, 0, 255).astype(np.uint8), "RGBA")
         gr = Image.new("L", (W + 600, 600), 0); d = ImageDraw.Draw(gr)
         rg = np.random.default_rng(66)
