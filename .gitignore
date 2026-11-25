@@ -5,3 +5,5 @@ episodes/*/p2/
 episodes/*/stills/
 episodes/*/log_*.txt
 toolkit/models/
+episodes/*/*_raw.mp4
+episodes/*/ep*_part[12].mp4
