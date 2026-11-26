@@ -171,3 +171,12 @@ Nova prefers FLAT colours, but with more creativity and depth. Reference: `toolk
 | 13 | Japan | Hanako-san of the toilet |
 | 14 | Philippines | Tikbalang |
 | 15 | Laos | Phi Pop |
+| 16 | Indonesia | Kuntilanak (woman in white in a tree, laughing; frangipani smell; a nail in the neck in the legend - show NO nail/wound) |
+| 17 | Thailand | Mae Nak of Phra Khanong (the ghost wife; the long arm reaching for a dropped lime) |
+| 18 | Taiwan | Mosien / the little girl in red (the mountain spirit that leads hikers astray) |
+| 19 | Malaysia | Toyol (the small child spirit that steals money; a jar, a bowl of marbles or a mirror as the trick) |
+| 20 | Japan | Yuki-onna (the snow woman; a mountain hut in a blizzard) |
+| 21 | Sri Lanka | Mohini (the woman in white with a baby on a lonely road) |
+| 22 | Malaysia | Hantu Tinggi (the too-tall ghost; it grows taller the more you look up) |
+
+(Rows 16-22 added 2026-11-26 by the run that made ep15, from the ideas in LOG.md; Nova can reorder them.)
