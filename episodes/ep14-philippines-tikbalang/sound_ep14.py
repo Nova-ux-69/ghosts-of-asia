@@ -120,7 +120,7 @@ def pad(dur, freqs, g):
 
 
 import os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "toolkit"))
-import sfx
+import sfx2 as sfx   # NEW sound kit (Nova 2026-11-27)
 def footsteps(t0, t1, per, g=1.0, pan=0.0):
     t = t0
     while t < t1:
@@ -830,6 +830,8 @@ else:
     kulintang(st["outro"] + .2, st["outro"] + DUR["outro"] - .8, .5, .5, seed=34)
     for k in range(5): add(hoof(.6), st["outro"] + k * 2.0, 0)
     add(sfx.dog_howl(4.0, 540, .85, seed=11), st["outro"] + 3.5, -.5)
+_bL, _bR = sfx.bed(N / SR, seed=14)
+L += _bL[:N] * 1.0; R += _bR[:N] * 1.0
 for a, b in SIL:
     m = np.ones(N); m[int(a * SR):int(b * SR)] = 0.0; m = lp(m, .02); L *= m; R *= m
 duck = np.ones(N)

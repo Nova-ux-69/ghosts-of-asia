@@ -11,6 +11,12 @@ Nova's goal is to grow the channel and succeed on YouTube. Ghost stories from As
 
 ---
 
+## 0. NEW RULES (Nova, 2026-11-27) — read first
+- **Metricool free plan = 20 published posts per calendar month.** November's 20 are used up (Cambodia/Vietnam/Japan failed with "You have reached your Metricool account limit"). **Until 2026-12-01: do NOT schedule in Metricool.** Make the episode, commit videos/epNN_part1.mp4 + part2.mp4, and write the titles + descriptions in LOG.md. Nova uploads them himself from his phone; the main session sends him the files. From December, count posts: max 20 per month on Free (= 10 episodes, so roughly ONE episode every 3 days, or upgrade).
+- **Voice: am_puck (younger American male), lang en-us.** It is now the default in toolkit/gen_voice.py (old: bm_george).
+- **Sound: use the NEW kit** — `import sfx2 as sfx` (toolkit/sfx2.py): taiko+metal hits with tape-stops, child humming, detuned music box, ticking clock, bowed glass, wind howling through trees instead of dogs, and `sfx.bed(seconds)` = a breathing/whispering choir background under the whole video. Vary it per episode; don't reuse the old braam/dog-howl sound.
+- **Colour: BLACK style.** After finalize, run `bash toolkit/grade_black.sh epNN_partN_raw.mp4 epNN_partN.mp4` (near-black shadows, low saturation with small colour accents, light smoke, grain, flicker, heavy vignette). This replaces grade.sh.
+
 ## 1. Daily run checklist
 
 1. **Set up.** Run `bash toolkit/setup.sh`.

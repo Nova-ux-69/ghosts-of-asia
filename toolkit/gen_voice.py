@@ -16,7 +16,7 @@ for part, scenes in PARTS.items():
             spoken = ln
             for w_, s_ in SAY.items():
                 spoken = spoken.replace(w_, s_)
-            a, sr = k.create(spoken, voice="bm_george", speed=0.86 if slow else 0.95, lang="en-gb")
+            a, sr = k.create(spoken, voice=os.environ.get("VOICE", "am_puck"), speed=(0.86 if slow else 0.95) * float(os.environ.get("VSPEED", "1")), lang=os.environ.get("VLANG", "en-us"))
             d = len(a) / SR; caps.append([ln, round(t, 3), round(t + d, 3)])
             parts += [a, np.zeros(int(GAP * SR))]; t += d + GAP
         parts.append(np.zeros(int(hold * SR)))
